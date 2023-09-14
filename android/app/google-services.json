@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "880011248635",
+    "project_id": "safealert-239e3",
+    "storage_bucket": "safealert-239e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:880011248635:android:9ddc85adab9bf44a66815e",
+        "android_client_info": {
+          "package_name": "com.make.flutter_alarm_safealert"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "880011248635-l2m21pb29tv5l4h85t4op1t0d6hfh3n4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDto33272ycrBEo8iIN__9tFT3ZKA8Jia8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "880011248635-l2m21pb29tv5l4h85t4op1t0d6hfh3n4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
