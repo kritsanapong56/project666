@@ -37,10 +37,10 @@ class _TimeDayMedicine extends State<TimeDayMedicine> {
   TextEditingController txtMedicine = TextEditingController();
 
   List<ModelDayMedicine> listTimeDay = [
-    // ModelDayMedicine(timeDayId: "1", timeDayName: '1 ครั้ง/วัน'),
-    // ModelDayMedicine(timeDayId: "2", timeDayName: '2 ครั้ง/วัน'),
-    // ModelDayMedicine(timeDayId: "3", timeDayName: '3 ครั้ง/วัน'),
-    // ModelDayMedicine(timeDayId: "4", timeDayName: 'มากกว่า 3 ครั้ง/วัน'),
+    ModelDayMedicine(timeDayId: "1", timeDayName: '1 ครั้ง/วัน'),
+    ModelDayMedicine(timeDayId: "2", timeDayName: '2 ครั้ง/วัน'),
+    ModelDayMedicine(timeDayId: "3", timeDayName: '3 ครั้ง/วัน'),
+    ModelDayMedicine(timeDayId: "4", timeDayName: 'มากกว่า 3 ครั้ง/วัน'),
   ];
   @override
   void initState() {

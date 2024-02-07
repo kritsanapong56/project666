@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:audio_session/audio_session.dart';
@@ -10,12 +11,13 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:just_audio/just_audio.dart';
-import '../../tool/color.dart'; 
+import '../../tool/color.dart';
 import '../../ui/dialog/remark_select.dart';
 
 import '../alarm_notification.dart';
 import '../alarm_storage.dart';
 import '../model/ModeReport.dart';
+import '../model/ModelAlarmMedicine.dart';
 import '../model/ModelRegister.dart';
 import '../tool/api.dart';
 import '../tool/url.dart';
@@ -30,6 +32,7 @@ import 'medicine/MedicineMain.dart';
 import 'menu/MenuList.dart';
 
 var selectedDate = "";
+
 class MainMenu extends StatefulWidget {
   static const routeName = '/';
   @override
@@ -37,14 +40,13 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenu extends State<MainMenu> {
-
   final player = AudioPlayer(
     // Handle audio_session events ourselves for the purpose of this demo.
     handleInterruptions: false,
     androidApplyAudioAttributes: false,
     handleAudioSessionActivation: false,
   );
-  StreamSubscription? _subscription2;
+  StreamSubscription? _notificationSubscription;
   int _currentIndex = 1;
   int _counter = 10;
   final tabs = [
@@ -82,6 +84,12 @@ class _MainMenu extends State<MainMenu> {
   ];
   @override
   void initState() {
+    _notificationSubscription = AlarmNotification.selectNotificationStream.stream.listen((data) {
+      final med = ModelAlarmMedicine.fromMap(json.decode(data ?? ''));
+
+      _showAlertAlarmMedicine(med.alarm_id, 0, med.img_medicine, med.set_time_alarm,
+          med.msg_num_medicine, med.medicine_name, 0);
+    });
 
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       if (message != null) {
@@ -93,18 +101,20 @@ class _MainMenu extends State<MainMenu> {
     });
     FirebaseMessaging.onMessage.listen((message) {
       print('message $message');
-      try{
+      try {
         var alert_id = message.data['alert_id'];
         var medicine_id = message.data['medicine_id'];
         var medicine_name = message.data['medicine_name'];
         var msg_time_alarm = message.data['msg_time_alarm'];
         var msg_num_medicine = message.data['msg_num_medicine'];
         var time_eat_real = message.data['time_eat_real'];
+        var img_medicine = message.data['img_medicine'];
         Future.delayed(const Duration(milliseconds: 4000), () {
           FlutterRingtonePlayer.stop();
         });
-        _showAlertAlarmMedicine(alert_id,medicine_id,msg_time_alarm,msg_num_medicine,medicine_name,time_eat_real);
-      }catch(e){}
+        _showAlertAlarmMedicine(alert_id, medicine_id, img_medicine, msg_time_alarm,
+            msg_num_medicine, medicine_name, time_eat_real);
+      } catch (e) {}
     });
 
     //onclick notif system tray only works if app in background but not termi
@@ -115,14 +125,22 @@ class _MainMenu extends State<MainMenu> {
       var msg_time_alarm = message.data['msg_time_alarm'];
       var msg_num_medicine = message.data['msg_num_medicine'];
       var time_eat_real = message.data['time_eat_real'];
+      var img_medicine = message.data['img_medicine'];
       Future.delayed(const Duration(milliseconds: 4000), () {
         FlutterRingtonePlayer.stop();
       });
-      _showAlertAlarmMedicine(alert_id,medicine_id,msg_time_alarm,msg_num_medicine,medicine_name,time_eat_real);
+      _showAlertAlarmMedicine(alert_id, medicine_id, img_medicine, msg_time_alarm, msg_num_medicine,
+          medicine_name, time_eat_real);
     });
 
     FirebaseMessaging.onBackgroundMessage(_messageHandler);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _notificationSubscription?.cancel();
+    super.dispose();
   }
 
   Future<void> _messageHandler(RemoteMessage message) async {
@@ -163,7 +181,8 @@ class _MainMenu extends State<MainMenu> {
       "ยาหมด",
       "ไม่ต้องการทานยา",
       "มีผลข้างเคียง",
-      "อื่นๆ"];
+      "อื่นๆ"
+    ];
 
     final String? results = await showDialog(
       context: context,
@@ -175,20 +194,19 @@ class _MainMenu extends State<MainMenu> {
     // Update UI
     if (results != null) {
       // setState(() async {
-        if(results == title.last){
-          _showAnotherRemarkSelect(medicine_id);
-        }else{
-          await ModelReport.addReportSkip(medicine_id,results);
-        }
+      if (results == title.last) {
+        _showAnotherRemarkSelect(medicine_id);
+      } else {
+        await ModelReport.addReportSkip(medicine_id, results);
+      }
 
-        // titleName = results.toString();
-        // _fieldTitleName.text = titleName;
+      // titleName = results.toString();
+      // _fieldTitleName.text = titleName;
       // });
     }
   }
 
   void _showAnotherRemarkSelect(alert_id) async {
-
     final String? results = await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -198,47 +216,47 @@ class _MainMenu extends State<MainMenu> {
 
     // Update UI
     if (results != null) {
-
-      await ModelReport.addReportSkip(alert_id,results);
+      await ModelReport.addReportSkip(alert_id, results);
       // setState(() {
 
-        // titleName = results.toString();
-        // _fieldTitleName.text = titleName;
+      // titleName = results.toString();
+      // _fieldTitleName.text = titleName;
       // });
     }
   }
 
-  void _showAlertAlarmMedicine(alert_id,medicine_id,msg_time_alarm,msg_num_alarm,medicine_name,time_eat_real) async {
-
+  void _showAlertAlarmMedicine(alert_id, medicine_id, img_medicine, msg_time_alarm, msg_num_alarm,
+      medicine_name, time_eat_real) async {
     final String? results = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return alert_alarm_medicine(alert_id,msg_time_alarm,msg_num_alarm,medicine_name);
+        return alert_alarm_medicine(
+            alert_id, img_medicine, msg_time_alarm, msg_num_alarm, medicine_name);
       },
     );
 
     // Update UI
     if (results != null) {
       // setState(() async {
-        player.play();
-        // titleName = results.toString();
-        // _fieldTitleName.text = titleName;
-        if(results == "snooze"){
-          _showTimeAlarmNext(alert_id,time_eat_real);
-        }else if(results == "stop"){
-          await ModelReport.addReportEat(medicine_id);
-        }else if(results == "skip"){
-          _showRemarkSelect(medicine_id);
-        }else if(results == "edit"){
-          _pushPageAddMedicine(context, false,medicine_id,medicine_name);
-        }else if(results == "delete"){
-          await ModelItemMedicine.deleteAlarm(alert_id);
-        }
+      player.play();
+      // titleName = results.toString();
+      // _fieldTitleName.text = titleName;
+      if (results == "snooze") {
+        _showTimeAlarmNext(alert_id, time_eat_real);
+      } else if (results == "stop") {
+        await ModelReport.addReportEat(medicine_id);
+      } else if (results == "skip") {
+        _showRemarkSelect(medicine_id);
+      } else if (results == "edit") {
+        _pushPageAddMedicine(context, false, medicine_id, medicine_name);
+      } else if (results == "delete") {
+        await ModelItemMedicine.deleteAlarm(alert_id);
+      }
       // });
     }
   }
-  void _showTimeAlarmNext(alert_id,time_eat_real) async {
 
+  void _showTimeAlarmNext(alert_id, time_eat_real) async {
     final String? results = await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -253,8 +271,7 @@ class _MainMenu extends State<MainMenu> {
         "time_eat_real": time_eat_real,
         "time_snooze": results
       };
-      final response = await AppApi.post_Json(
-          AppUrl.update_time_snooze, data); // เรียกใช้ api
+      final response = await AppApi.post_Json(AppUrl.update_time_snooze, data); // เรียกใช้ api
       print(response);
       if (response['statusCode'] == 200) {
         // AppLoader.showSuccess("แก้ไขสำเร็จ");
@@ -264,14 +281,15 @@ class _MainMenu extends State<MainMenu> {
 
   void loadData() async {
     final list = await ModelRegister.getData();
-    setState((){
+    setState(() {
       AppUrl.objRegister = ModelRegister.fromJson(list);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  AppColors.bdColor,
+      backgroundColor: AppColors.bdColor,
       appBar: null,
       body: Container(
         margin: EdgeInsets.only(bottom: 20.0),
@@ -283,8 +301,8 @@ class _MainMenu extends State<MainMenu> {
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         selectedItemColor: AppColors.colorMain,
-        backgroundColor:  Color(0xfff6f6f9),
-       onTap: (index) {
+        backgroundColor: Color(0xfff6f6f9),
+        onTap: (index) {
           setState(() {
             _currentIndex = index;
           });
@@ -293,34 +311,34 @@ class _MainMenu extends State<MainMenu> {
         showUnselectedLabels: true,
         unselectedLabelStyle: TextStyle(fontSize: 20, fontFamily: 'SukhumvitSet-SemiBold'),
         selectedLabelStyle: TextStyle(fontSize: 25, fontFamily: 'SukhumvitSet-SemiBold'),
-      items: [
-        BottomNavigationBarItem(
-          icon: ImageIcon(
-            AssetImage("assets/images/med.png"),
-            size:50,
+        items: [
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage("assets/images/med.png"),
+              size: 50,
+            ),
+            label: 'ยา',
           ),
-          label: 'ยา',
-        ),
-        BottomNavigationBarItem(
-          icon: ImageIcon(
-            AssetImage("assets/images/home.png"),
-            size:50,
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage("assets/images/home.png"),
+              size: 50,
+            ),
+            label: 'หน้าหลัก',
           ),
-          label: 'หน้าหลัก',
-        ),
-        BottomNavigationBarItem(
-          icon: ImageIcon(
-            AssetImage("assets/images/menu.png"),
-            size:50,
-          ),
-          label: 'เมนู',
-        )
-      ],
-    ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage("assets/images/menu.png"),
+              size: 50,
+            ),
+            label: 'เมนู',
+          )
+        ],
+      ),
     );
   }
 
-  Widget myAppBarIcon(){
+  Widget myAppBarIcon() {
     return Container(
       child: Stack(
         children: [
@@ -357,13 +375,16 @@ class _MainMenu extends State<MainMenu> {
     );
   }
 
-  void _pushPageAddMedicine(BuildContext context, bool isHorizontalNavigation,String medicine_id,String medicine_name) {
-    Navigator.of(context, rootNavigator: !isHorizontalNavigation).push(
+  void _pushPageAddMedicine(
+      BuildContext context, bool isHorizontalNavigation, String medicine_id, String medicine_name) {
+    Navigator.of(context, rootNavigator: !isHorizontalNavigation)
+        .push(
       _buildAdaptivePageRoute(
-        builder: (context) => AddMedicine(medicine_id,medicine_name),
+        builder: (context) => AddMedicine(medicine_id, medicine_name),
         fullscreenDialog: !isHorizontalNavigation,
       ),
-    ).then((value) {
+    )
+        .then((value) {
       const Duration(seconds: 2);
       // ReloadData();
     });
@@ -377,12 +398,11 @@ class _MainMenu extends State<MainMenu> {
   }) =>
       Platform.isAndroid
           ? MaterialPageRoute(
-        builder: builder,
-        fullscreenDialog: fullscreenDialog,
-      )
+              builder: builder,
+              fullscreenDialog: fullscreenDialog,
+            )
           : CupertinoPageRoute(
-        builder: builder,
-        fullscreenDialog: fullscreenDialog,
-      );
-
+              builder: builder,
+              fullscreenDialog: fullscreenDialog,
+            );
 }

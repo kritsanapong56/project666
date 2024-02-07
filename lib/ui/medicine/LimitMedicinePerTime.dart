@@ -37,17 +37,19 @@ class _LimitMedicinePerTime extends State<LimitMedicinePerTime> {
   var _selectedNum = 1;
   var _selectedWeightDecimals = 0;
   var _selectedUnits = 'เม็ด';
-  var units = ['ออนซ์', 'เม็ด','ช้อนชา','ช้อนโต๊ะ'];
+  var units = ['ออนซ์', 'เม็ด','ช้อนชา','ช้อนโต๊ะ','มิลิกรัม'];
   var num = [];
   TextEditingController txtMedicine = TextEditingController();
 
   @override
   void initState() {
-    for (int j = 0; j <= 1000; j++) {
+    for (double j = 0.5; j <= 10; j++) {
       num.add(j);
     }
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class _LimitMedicinePerTime extends State<LimitMedicinePerTime> {
         centerTitle: true,
           backgroundColor: AppColors.colorMain,
           title: new Text("ปริมาณการใช้ยาต่อครั้ง",style: TextStyle(
-            fontSize: 25,color: Colors.black,
+            fontSize: 25,color: const Color.fromARGB(255, 149, 138, 138),
               fontFamily: 'SukhumvitSet-Bold'),),
           leading: IconButton(
             icon: ImageIcon(
@@ -124,7 +126,7 @@ class _LimitMedicinePerTime extends State<LimitMedicinePerTime> {
                       },
                       selectionOverlay: CupertinoPickerDefaultSelectionOverlay(capEndEdge: false, capStartEdge: false),
                       scrollController: FixedExtentScrollController(
-                        initialItem: 1,
+                        initialItem: 0,
                       ),
                       children: List<Widget>.generate(
                         num.length,
@@ -222,6 +224,7 @@ class _LimitMedicinePerTime extends State<LimitMedicinePerTime> {
       ),
     );
   }
+  
 void _pushPageAllAmountMedicine(BuildContext context, bool isHorizontalNavigation) {
   Navigator.of(context, rootNavigator: !isHorizontalNavigation).push(
     _buildAdaptivePageRoute(

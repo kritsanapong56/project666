@@ -11,8 +11,9 @@ class alert_alarm_medicine extends StatefulWidget {
   final medicine_name;
   final msg_time_alarm;
   final msg_num_alarm;
+  final img_medicine;
 
-  const alert_alarm_medicine(this.alert_id,this.msg_time_alarm, this.msg_num_alarm,this.medicine_name , {Key? key}) : super(key: key);
+  const alert_alarm_medicine(this.alert_id,this.img_medicine,this.msg_time_alarm, this.msg_num_alarm,this.medicine_name , {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _alert_alarm_medicineState();
@@ -56,20 +57,20 @@ class _alert_alarm_medicineState extends State<alert_alarm_medicine> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            padding: EdgeInsets.only(left: 5),
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              icon: ImageIcon(
-                AssetImage("assets/images/trash.png"),
-                size:30,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.pop(context,"delete");
-              },
-            ),
-          ),
+          // Container(
+          //   padding: EdgeInsets.only(left: 5),
+          //   alignment: Alignment.centerRight,
+          //   child: IconButton(
+          //     icon: ImageIcon(
+          //       AssetImage("assets/images/trash.png"),
+          //       size:30,
+          //       color: Colors.black,
+          //     ),
+          //     onPressed: () {
+          //       Navigator.pop(context,"delete");
+          //     },
+          //   ),
+          // ),
           Container(
             padding: EdgeInsets.only(right: 5),
             alignment: Alignment.centerRight,
@@ -117,14 +118,20 @@ class _alert_alarm_medicineState extends State<alert_alarm_medicine> {
                                 color:Colors.white,
                                 child: Column(
                                   children: [
-                                    Image(
-                                      image: AssetImage('assets/images/pills.png'),
-                                      height: 50,
-                                      width: 50,
-                                    ),
+                                    // Image(
+                                    //   image: AssetImage('assets/images/pills.png'),
+                                    //   height: 50,
+                                    //   width: 50,
+                                    // ),
+                                    widget.img_medicine != null && widget.img_medicine.isNotEmpty ?
+                                    Image.network(widget.img_medicine,width: 50, height: 50,) :
+                                    ImageIcon(
+                                      AssetImage("assets/images/pills.png"),
+                                      size: 50,
+                                      color: Colors.black,),
                                     SizedBox(height: 10,),
                                     Text(
-                                      "ชื่อยา",
+                                      widget.medicine_name,
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 25,
