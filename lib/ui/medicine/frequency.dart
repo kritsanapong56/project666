@@ -85,7 +85,7 @@ class _frequencyState extends State<frequency> {
                     MaterialPageRoute(builder: (context) => AddTimeAlertMedicine(halo)),
                   );
                   // ทำอะไรก็ตามที่คุณต้องการเมื่อกดปุ่ม "หน้าถัดไป"
-                  // ในตัวอย่างนี้เราจะแสดงข้อมูลที่ถูกเลือก
+                  // ในตัวอย่างนี้เราจะแสดงข้อมูลที่ถูกเลือก ooooooooooooooooooooooooooooooooooooooooooooo
                   print('เลือกข้อมูล: $selectedNumber');
                 },
                 child: Text('หน้าถัดไป'),
