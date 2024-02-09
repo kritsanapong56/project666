@@ -40,7 +40,7 @@ class _frequencyState extends State<frequency> {
               child: Column(
                 children: [
                   Text(
-                    'กำหนดวันที่ทานยา',
+                    'ความถี่การทานยา',
                     style: TextStyle(fontSize: 30),
                   ),
                   SizedBox(height: 20),
@@ -66,12 +66,7 @@ class _frequencyState extends State<frequency> {
                   fontFamily: 'SukhumvitSet-Bold'),),
                         value: 3,
                       ),
-                      DropdownMenuItem(
-                        child: Text("รอบประจำเดือน",style: TextStyle(
-                fontSize: 25,color: Colors.black,
-                  fontFamily: 'SukhumvitSet-Bold'),),
-                        value: 4,
-                      ),
+                    
                     ],
                     onChanged: (value) {
                       setState(() {
@@ -110,3 +105,8 @@ class _frequencyState extends State<frequency> {
     );
   }
 }
+
+
+
+// กดหดหกดหกฝ
+
