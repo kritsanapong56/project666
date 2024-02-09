@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:ui';
 
@@ -8,23 +7,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_alarm_safealert/ui/medicine/frequency.dart';
 
 import '../../model/ModelTimeTakeMedicine.dart';
-import '../../tool/color.dart'; 
+import '../../tool/color.dart';
 
 import '../../tool/screen.dart';
 import '../../tool/url.dart';
 
 import 'TypeMedicine.dart';
+
 class AddMedicine extends StatefulWidget {
   final medicine_id;
   final medicine_name;
-  AddMedicine(this.medicine_id,this.medicine_name);
+  AddMedicine(this.medicine_id, this.medicine_name);
   @override
   _AddMedicine createState() => _AddMedicine();
 }
 
 class _AddMedicine extends State<AddMedicine> {
-
-
   TextEditingController txtMedicine = TextEditingController();
 
   int _selectedIndex = -1;
@@ -36,19 +34,20 @@ class _AddMedicine extends State<AddMedicine> {
     // ModelTimeTakeMedicine(timeTakeId: "3", timeTakeName: 'ทานพร้อมอาหาร'),
     // ModelTimeTakeMedicine(timeTakeId: "4", timeTakeName: 'ทานตามอาการ'),
   ];
-  
+
   get txtMedicineQuantity => null;
   @override
   void initState() {
-    if(widget.medicine_id.toString().isNotEmpty){
+    if (widget.medicine_id.toString().isNotEmpty) {
       AppUrl.objAddItemMedicine.medicineId = widget.medicine_id;
     }
-    if(widget.medicine_name.toString().isNotEmpty){
+    if (widget.medicine_name.toString().isNotEmpty) {
       txtMedicine.text = widget.medicine_name;
     }
     // loadDataTimeTake();
-    super.initState(); 
+    super.initState();
   }
+
   // void loadDataTimeTake() async {
   //   listTimeTake.clear();
   //   final list = await ModelTimeTakeMedicine.getTimeTake();
@@ -64,7 +63,11 @@ class _AddMedicine extends State<AddMedicine> {
     for (int i = 0; i < listTimeTake.length; i++) {
       ChoiceChip choiceChip = ChoiceChip(
         selected: _selectedIndex == i,
-        label: Text(listTimeTake[i].timeTakeName, style: TextStyle(color: Colors.black,fontFamily: 'SukhumvitSet-SemiBold',fontSize: 25)),
+        label: Text(listTimeTake[i].timeTakeName,
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'SukhumvitSet-SemiBold',
+                fontSize: 25)),
         elevation: 3,
         pressElevation: 5,
         shape: RoundedRectangleBorder(
@@ -89,178 +92,262 @@ class _AddMedicine extends State<AddMedicine> {
       children: chips,
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
+      appBar: AppBar(
         centerTitle: true,
-          backgroundColor: AppColors.colorMain,
-          title: const Text("กรุณาเพิ่มยา",style: TextStyle(
-            fontSize: 25,color: Colors.black,
-              fontFamily: 'SukhumvitSet-Bold'),),
-          leading: IconButton(
-            icon: const ImageIcon(
-                AssetImage("assets/images/arrow_left.png"),
-                  size:40,
-                  color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+        backgroundColor: AppColors.colorMain,
+        title: const Text(
+          "กรุณาเพิ่มยา",
+          style: TextStyle(
+              fontSize: 25,
+              color: Colors.black,
+              fontFamily: 'SukhumvitSet-Bold'),
+        ),
+        leading: IconButton(
+          icon: const ImageIcon(
+            AssetImage("assets/images/arrow_left.png"),
+            size: 40,
+            color: Colors.black,
           ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Container(
         width: double.maxFinite,
         height: double.maxFinite,
         margin: const EdgeInsets.only(top: 30.0),
-        child: ListView(
-          children: [
-            Container(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Expanded(
-                                flex: 10,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(top: 20,left: 10,right: 10),
-                                      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                                      width: double.maxFinite,
-                                      child: TextField(
-                                        controller: txtMedicine,
-                                        enabled: true,
-                                        style: const TextStyle(
-                                          fontSize: 25.0,
+        child: ListView(children: [
+          Container(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 10,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  /////////////////////ชื่อยา/////////////////////////////////////////////////////
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 20, left: 10, right: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 15.0, right: 15.0),
+                                    width: double.maxFinite,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'ชื่อยา', // Your additional text here
+                                          style: TextStyle(
+                                            fontSize: 22.0,
                                             fontFamily: 'SukhumvitSet-Bold',
-                                            color: Colors.black),
-                                        decoration: new InputDecoration(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                            height:
+                                                10), // Adjust the spacing between text and TextField
+                                        TextField(
+                                          controller: txtMedicine,
+                                          enabled: true,
+                                          style: const TextStyle(
+                                            fontSize: 25.0,
+                                            fontFamily: 'SukhumvitSet-Bold',
+                                            color: Colors.black,
+                                          ),
+                                          decoration: new InputDecoration(
                                             contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                vertical: 10.0, horizontal: 15),
-                                            //ปรับตำแหน่งcursor เริ่มต้นในช่องข้อความ
+                                                const EdgeInsets.symmetric(
+                                              vertical: 10.0,
+                                              horizontal: 15,
+                                            ),
                                             border: new OutlineInputBorder(
-                                                borderRadius:
-                                                const BorderRadius.all(
-                                                  const Radius.circular(20.0),
-                                                ),
-                                                borderSide: BorderSide(
-                                                    width: 0,
-                                                    style: BorderStyle.none)),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                const Radius.circular(20.0),
+                                              ),
+                                              borderSide: BorderSide(
+                                                width: 0,
+                                                style: BorderStyle.none,
+                                              ),
+                                            ),
                                             filled: true,
                                             hintText: "ชื่อยา",
                                             hintStyle: new TextStyle(
-                                                fontFamily: 'SukhumvitSet-Medium',
-                                                color: Colors.grey[800]),
-                                            fillColor:AppColors.bgColor),
-                                        // fillColor: Colors.white70),
-                                      ),
+                                              fontFamily: 'SukhumvitSet-Medium',
+                                              color: Colors.grey[800],
+                                            ),
+                                            fillColor: AppColors.bgColor,
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  ),
+                                  ///////////////////////////ปริมาณยาที่ทานต่อครั้ง//////////////////////////////
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 20, left: 10, right: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 15.0, right: 15.0),
+                                    width: double.maxFinite,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'ปริมาณยาที่ทานต่อครั้ง', // Your additional text here
+                                          style: TextStyle(
+                                            fontSize: 22.0,
+                                            fontFamily: 'SukhumvitSet-Bold',
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                            height:
+                                                10), // Adjust the spacing between text and TextField
+                                        TextField(
+                                          controller: txtMedicineQuantity,
+                                          enabled: true,
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                  decimal: true),
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                                10),
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(r"^\d+(?:\.\d+)?$")),
+                                          ],
+                                          style: const TextStyle(
+                                            fontSize: 25.0,
+                                            fontFamily: 'SukhumvitSet-Bold',
+                                            color: Colors.black,
+                                          ),
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                              vertical: 10.0,
+                                              horizontal: 15,
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              borderSide: BorderSide(
+                                                  width: 0,
+                                                  style: BorderStyle.none),
+                                            ),
+                                            filled: true,
+                                            hintText: "ปริมาณยาที่ทานต่อครั้ง",
+                                            hintStyle: TextStyle(
+                                              fontFamily: 'SukhumvitSet-Medium',
+                                              color: Colors.grey[800],
+                                            ),
+                                            fillColor: AppColors.bgColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+/////////////////////////////หน่วย/////////////////////////////////////////////////
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 20, left: 10, right: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 15.0, right: 15.0),
+                                    width: double.maxFinite,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'หน่วย', // Your additional text here
+                                          style: TextStyle(
+                                            fontSize: 22.0,
+                                            fontFamily: 'SukhumvitSet-Bold',
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                            height:
+                                                10), // Adjust the spacing between text and TextField
+                                        TextField(
+                                          controller: txtMedicineQuantity,
+                                          enabled: true,
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                  decimal: true),
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                                10),
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(r"^\d+(?:\.\d+)?$")),
+                                          ],
+                                          style: const TextStyle(
+                                            fontSize: 25.0,
+                                            fontFamily: 'SukhumvitSet-Bold',
+                                            color: Colors.black,
+                                          ),
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                              vertical: 10.0,
+                                              horizontal: 15,
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              borderSide: BorderSide(
+                                                  width: 0,
+                                                  style: BorderStyle.none),
+                                            ),
+                                            filled: true,
+                                            hintText: "หน่วย",
+                                            hintStyle: TextStyle(
+                                              fontFamily: 'SukhumvitSet-Medium',
+                                              color: Colors.grey[800],
+                                            ),
+                                            fillColor: AppColors.bgColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
 
-Container(
-  margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-  width: double.maxFinite,
-  child: TextField(
-    controller: txtMedicineQuantity, // Use a separate controller for quantity
-    enabled: true,
-    keyboardType: TextInputType.numberWithOptions(decimal: true), // Allow decimals for dosages
-    inputFormatters: [
-      // Implement validation or formatting like:
-      LengthLimitingTextInputFormatter(10), // Max 10 characters
-      FilteringTextInputFormatter.allow(RegExp(r"^\d+(?:\.\d+)?$")), // Allow digits and optional decimal
-    ],
-    style: const TextStyle(
-      fontSize: 25.0,
-      fontFamily: 'SukhumvitSet-Bold',
-      color: Colors.black,
-    ),
-    decoration: InputDecoration(
-      contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20.0),
-        borderSide: BorderSide(width: 0, style: BorderStyle.none),
-      ),
-      filled: true,
-      hintText: "ปริมาณยาที่ทานต่อครั้ง",
-      hintStyle: TextStyle(
-        fontFamily: 'SukhumvitSet-Medium',
-        color: Colors.grey[800],
-      ),
-      fillColor: AppColors.bgColor,
-    ),
-  ),
-),
-
-Container(
-  margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-  width: double.maxFinite,
-  child: TextField(
-    controller: txtMedicineQuantity, // Use a separate controller for quantity
-    enabled: true,
-    keyboardType: TextInputType.numberWithOptions(decimal: true), // Allow decimals for dosages
-    inputFormatters: [
-      // Implement validation or formatting like:
-      LengthLimitingTextInputFormatter(10), // Max 10 characters
-      FilteringTextInputFormatter.allow(RegExp(r"^\d+(?:\.\d+)?$")), // Allow digits and optional decimal
-    ],
-    style: const TextStyle(
-      fontSize: 25.0,
-      fontFamily: 'SukhumvitSet-Bold',
-      color: Colors.black,
-    ),
-    decoration: InputDecoration(
-      contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20.0),
-        borderSide: BorderSide(width: 0, style: BorderStyle.none),
-      ),
-      filled: true,
-      hintText: "หน่วย",
-      hintStyle: TextStyle(
-        fontFamily: 'SukhumvitSet-Medium',
-        color: Colors.grey[800],
-      ),
-      fillColor: AppColors.bgColor,
-    ),
-  ),
-),
-
-
-                                    Container(
+                                  Container(
                                       padding: EdgeInsets.only(top: 20),
                                       alignment: Alignment.center,
-                                      child:
-                                    _buildChipsTypeTime())
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
+                                      child: _buildChipsTypeTime())
+                                ],
+                              ),
+                            )
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            )
-          ]),
+            ),
+          )
+        ]),
       ),
-      floatingActionButtonLocation:
-      FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
         height: 60,
         margin: const EdgeInsets.all(20),
-        child:  Row(
+        child: Row(
           children: [
             Expanded(
               flex: 5,
@@ -271,14 +358,19 @@ Container(
                 child: ElevatedButton(
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsets>(
-                      EdgeInsets.only(left: 5,right: 5,top: 10,bottom: 10),),
-                    shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0), )),
-                    backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.colorMain),
+                      EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
+                    ),
+                    shape: MaterialStateProperty.resolveWith(
+                        (states) => RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            )),
+                    backgroundColor: MaterialStateProperty.resolveWith(
+                        (states) => AppColors.colorMain),
                     elevation: MaterialStateProperty.resolveWith<double>(
-                          (Set<MaterialState> states) {
+                      (Set<MaterialState> states) {
                         return 2.0;
-                      },),
+                      },
+                    ),
                   ),
                   onPressed: () {
                     // Navigator.push(context,
@@ -288,8 +380,7 @@ Container(
                     Navigator.pop(context);
                   },
                   child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         child: const Text(
@@ -297,8 +388,7 @@ Container(
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 25,
-                              fontFamily:
-                              'SukhumvitSet-Bold'),
+                              fontFamily: 'SukhumvitSet-Bold'),
                         ),
                       ),
                     ],
@@ -315,14 +405,20 @@ Container(
                 child: ElevatedButton(
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsets>(
-                      const EdgeInsets.only(left: 5,right: 5,top: 10,bottom: 10),),
-                    shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0), )),
-                    backgroundColor: MaterialStateProperty.resolveWith((states) => AppColors.colorMain),
+                      const EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
+                    ),
+                    shape: MaterialStateProperty.resolveWith(
+                        (states) => RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            )),
+                    backgroundColor: MaterialStateProperty.resolveWith(
+                        (states) => AppColors.colorMain),
                     elevation: MaterialStateProperty.resolveWith<double>(
-                          (Set<MaterialState> states) {
+                      (Set<MaterialState> states) {
                         return 2.0;
-                      },),
+                      },
+                    ),
                   ),
                   // onPressed: () {
                   //   if(txtMedicine.text.isNotEmpty && _selectedIndex > -1) {
@@ -335,18 +431,17 @@ Container(
                   // },
 
                   onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const frequency(),
-                ),
-                );
-                // ทำอะไรก็ตามที่คุณต้องการเมื่อกดปุ่ม "หน้าถัดไป"
-                // ในตัวอย่างนี้เราจะแสดงข้อมูลที่ถูกเลือก
-                
-              },
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const frequency(),
+                      ),
+                    );
+                    // ทำอะไรก็ตามที่คุณต้องการเมื่อกดปุ่ม "หน้าถัดไป"
+                    // ในตัวอย่างนี้เราจะแสดงข้อมูลที่ถูกเลือก
+                  },
                   child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         child: const Text(
@@ -354,8 +449,7 @@ Container(
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 25,
-                              fontFamily:
-                              'SukhumvitSet-Bold'),
+                              fontFamily: 'SukhumvitSet-Bold'),
                         ),
                       ),
                     ],
@@ -369,7 +463,7 @@ Container(
     );
   }
 
-  _openPopupInvalidate(context,title) {
+  _openPopupInvalidate(context, title) {
     return showDialog(
       barrierDismissible: true,
       context: context,
@@ -383,7 +477,6 @@ Container(
                 ),
               ),
             ),
-
             content: Container(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -400,23 +493,22 @@ Container(
                   SizedBox(
                     height: mediaQuery(context, 'h', 20),
                   ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       ButtonTheme(
                         // minWidth: mediaQuery(context, 'h', 320),
                         // height: mediaQuery(context, 'h', 120),
-                        child:  ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(
-                                  mediaQuery(context, 'h', 50),
-                                ),
-                                side: BorderSide(
-                                  color: AppColors.color.withOpacity(0.51),
-                                ),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(
+                                mediaQuery(context, 'h', 50),
+                              ),
+                              side: BorderSide(
+                                color: AppColors.color.withOpacity(0.51),
+                              ),
                             ),
                           ),
                           onPressed: () {
@@ -442,13 +534,16 @@ Container(
       },
     );
   }
+
   void _pushPagetest(BuildContext context, bool isHorizontalNavigation) {
-    Navigator.of(context, rootNavigator: !isHorizontalNavigation).push(
+    Navigator.of(context, rootNavigator: !isHorizontalNavigation)
+        .push(
       _buildAdaptivePageRoute(
         builder: (context) => frequency(),
         fullscreenDialog: !isHorizontalNavigation,
       ),
-    ).then((value) {
+    )
+        .then((value) {
       const Duration(seconds: 2);
       // ReloadData();
     });
@@ -462,13 +557,11 @@ Container(
   }) =>
       Platform.isAndroid
           ? MaterialPageRoute(
-        builder: builder,
-        fullscreenDialog: fullscreenDialog,
-      )
+              builder: builder,
+              fullscreenDialog: fullscreenDialog,
+            )
           : CupertinoPageRoute(
-        builder: builder,
-        fullscreenDialog: fullscreenDialog,
-      );
-
+              builder: builder,
+              fullscreenDialog: fullscreenDialog,
+            );
 }
-
