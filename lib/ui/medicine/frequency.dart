@@ -34,65 +34,67 @@ class _frequencyState extends State<frequency> {
             },
           ),
       ),
-      body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'กำหนดวันที่ทานยา',
-                style: TextStyle(fontSize: 30),
-              ),
-              SizedBox(height: 20),
-              DropdownButton<int>(
-                value: selectedNumber,
-                items: [
-                  DropdownMenuItem(
-                    child: Text("ประจำวัน",style: TextStyle(
-            fontSize: 25,color: Colors.black,
-              fontFamily: 'SukhumvitSet-Bold'),),
-                    value: 1,
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20,40,20,20),
+            child: Center(
+              child: Column(
+                children: [
+                  Text(
+                    'กำหนดวันที่ทานยา',
+                    style: TextStyle(fontSize: 30),
                   ),
-                  DropdownMenuItem(
-                    child: Text("วันของสัปดาห์",style: TextStyle(
-            fontSize: 25,color: Colors.black,
-              fontFamily: 'SukhumvitSet-Bold'),),
-                    value: 2,
+                  SizedBox(height: 20),
+                  DropdownButton<int>(
+                    value: selectedNumber,
+                    items: [
+                      DropdownMenuItem(
+                        child: Text("ประจำวัน",style: TextStyle(
+                fontSize: 25,color: Colors.black,
+                  fontFamily: 'SukhumvitSet-Bold'),),
+                        value: 1,
+                        
+                      ),
+                      DropdownMenuItem(
+                        child: Text("วันของสัปดาห์",style: TextStyle(
+                fontSize: 25,color: Colors.black,
+                  fontFamily: 'SukhumvitSet-Bold'),),
+                        value: 2,
+                      ),
+                      DropdownMenuItem(
+                        child: Text("ช่วงวัน",style: TextStyle(
+                fontSize: 25,color: Colors.black,
+                  fontFamily: 'SukhumvitSet-Bold'),),
+                        value: 3,
+                      ),
+                      DropdownMenuItem(
+                        child: Text("รอบประจำเดือน",style: TextStyle(
+                fontSize: 25,color: Colors.black,
+                  fontFamily: 'SukhumvitSet-Bold'),),
+                        value: 4,
+                      ),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        selectedNumber = value!;
+                        
+                      });
+                    },
                   ),
-                  DropdownMenuItem(
-                    child: Text("ช่วงวัน",style: TextStyle(
-            fontSize: 25,color: Colors.black,
-              fontFamily: 'SukhumvitSet-Bold'),),
-                    value: 3,
-                  ),
-                  DropdownMenuItem(
-                    child: Text("รอบประจำเดือน",style: TextStyle(
-            fontSize: 25,color: Colors.black,
-              fontFamily: 'SukhumvitSet-Bold'),),
-                    value: 4,
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AddTimeAlertMedicine(halo)),
+                      );
+                      print('เลือกข้อมูล: $selectedNumber');
+                    },
+                    child: Text('หน้าถัดไป'),
                   ),
                 ],
-                onChanged: (value) {
-                  setState(() {
-                    selectedNumber = value!;
-                  });
-                },
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddTimeAlertMedicine(halo)),
-                  );
-                  // ทำอะไรก็ตามที่คุณต้องการเมื่อกดปุ่ม "หน้าถัดไป"
-                  // ในตัวอย่างนี้เราจะแสดงข้อมูลที่ถูกเลือก ooooooooooooooooooooooooooooooooooooooooooooo
-                  print('เลือกข้อมูล: $selectedNumber');
-                },
-                child: Text('หน้าถัดไป'),
-              ),
-            ],
+            ),
           ),
-        ),
       );
 
   }
