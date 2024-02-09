@@ -119,7 +119,11 @@ class _HomeMainState extends State<HomeMain> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
+    final bool isCurrentDate = dateOutputDate.year == DateTime.now().year &&
+      dateOutputDate.month == DateTime.now().month &&
+      dateOutputDate.day == DateTime.now().day;
+
     return Scaffold(
         backgroundColor: AppColors.bdColor,
         appBar: AppBar(
@@ -333,6 +337,8 @@ class _HomeMainState extends State<HomeMain> {
                                     fontFamily: 'SukhumvitSet-Bold'),
                                 textAlign: TextAlign.center),
                           ),
+                           if (isCurrentDate)
+                           // ถ้าวันที่ตรงจะแสดง ถ้าเป็น true
                           Container(
                             width: double.maxFinite,
                             margin: EdgeInsets.only(top: 20.0, bottom: 20, left: 10, right: 10),
