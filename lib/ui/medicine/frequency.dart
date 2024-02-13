@@ -20,6 +20,7 @@ class _frequencyState extends State<frequency> {
   TextEditingController txtHBD = TextEditingController();
   int selectedNumber = 1;
   String halo = "0";
+  String dropdownValue = 'ประจำวัน';
   void dateHBD(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
@@ -93,6 +94,11 @@ class _frequencyState extends State<frequency> {
       });
     });
   }
+  void handleBottomSheetItemTap(String value) {
+  setState(() {
+    dropdownValue = value;
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -119,139 +125,179 @@ class _frequencyState extends State<frequency> {
         ),
       ),
       body: Container(
-        padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
-        child: Center(
-          child: Column(
-            children: [
-              const Text(
-                'ความถี่การทานยา',
-                style: TextStyle(fontSize: 25,
-                color: Colors.black,
-                fontFamily:'SukhumvitSet-Bold' ),
+        margin: const EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(
+                top: 10,
+                left: 20,
               ),
-              SizedBox(height: 20),
-              DropdownButton<int>(
-                value: selectedNumber,
-                items: const [
-                  DropdownMenuItem(
-                    value: 1,
-                    child: Text(
-                      "ประจำวัน",
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
-                          fontFamily: 'SukhumvitSet-Bold'),
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: 2,
-                    child: Text(
-                      "วันของสัปดาห์",
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
-                          fontFamily: 'SukhumvitSet-Bold'),
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: 3,
-                    child: Text(
-                      "ช่วงวัน",
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
-                          fontFamily: 'SukhumvitSet-Bold'),
+              width: double.maxFinite,
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "ความถี่ในการทานยา",
+                    style: TextStyle(
+                      fontSize: 23.0,
+                      fontFamily: 'SukhumvitSet-Medium',
+                      color: Colors.black,
                     ),
                   ),
                 ],
-                onChanged: (value) {
-                  setState(() {
-                    selectedNumber = value!;
-                  });
-                },
               ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Expanded(
-                    flex: 10,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin:
-                              const EdgeInsets.only(top: 20, left: 10, right: 10),
-                          padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                          width: double.maxFinite,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment
-                                .start, // Align text to the start
-                            children: [
-                              const Text(
-                                "เริ่มต้น",
-                                style: TextStyle(
-                                  fontSize: 20.0,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Container(
+    width: 380,
+    child: ElevatedButton(
+      onPressed: () {
+        showModalBottomSheet<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return Column(
+              mainAxisSize: MainAxisSize.min, // Prevent wrapping content
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    'ประจำวัน',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontFamily: 'SukhumvitSet-Medium',
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                  onTap: () => handleBottomSheetItemTap('ประจำวัน'),
+                ),
+                ListTile(
+                  title: Text(
+                    'วันของสัปดาห์',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontFamily: 'SukhumvitSet-Medium',
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                  onTap: () => handleBottomSheetItemTap('วันของสัปดาห์'),
+                ),
+                ListTile(
+                  title: Text(
+                    'ช่วงวัน',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontFamily: 'SukhumvitSet-Medium',
+                      color: Colors.grey[800],
+                    ),
+                  ),
+                  onTap: () => handleBottomSheetItemTap('ช่วงวัน'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: Text(
+        dropdownValue ?? "เลือก", // Display "เลือก" if no value is selected
+        style: TextStyle(
+          fontSize: 22,
+          fontFamily: 'SukhumvitSet-Medium',
+          color: Colors.grey[800],
+        ),
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.bgColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+    ),
+  ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Expanded(
+                  flex: 10,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin:
+                            const EdgeInsets.only(top: 20, left: 10, right: 10),
+                        padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                        width: double.maxFinite,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment
+                              .start, // Align text to the start
+                          children: [
+                            const Text(
+                              "เริ่มต้น",
+                              style: TextStyle(
+                                fontSize: 23.0,
+                                fontFamily: 'SukhumvitSet-Medium',
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(
+                                height:
+                                    10), // Adjust the spacing between "เริ่มต้น" and TextField
+                            TextField(
+                              onTap: () {
+                                dateHBD(context);
+                              },
+                              controller: txtHBD,
+                              readOnly: true,
+                              style: const TextStyle(
+                                fontSize: 25.0,
+                                fontFamily: 'SukhumvitSet-Bold',
+                                color: Colors.black,
+                              ),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 10.0,
+                                  horizontal: 15,
+                                ),
+                                border: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20.0),
+                                  ),
+                                  borderSide: BorderSide(
+                                      width: 0, style: BorderStyle.none),
+                                ),
+                                filled: true,
+                                hintText: "วันที่เริ่มทาน",
+                                hintStyle: TextStyle(
+                                  fontSize: 22,
                                   fontFamily: 'SukhumvitSet-Medium',
-                                  color: Colors.black,
+                                  color: Colors.grey[800],
                                 ),
+                                fillColor: AppColors.bgColor,
                               ),
-                              const SizedBox(
-                                  height:
-                                      10), // Adjust the spacing between "เริ่มต้น" and TextField
-                              TextField(
-                                onTap: () {
-                                  dateHBD(context);
-                                },
-                                controller: txtHBD,
-                                readOnly: true,
-                                style: const TextStyle(
-                                  fontSize: 25.0,
-                                  fontFamily: 'SukhumvitSet-Bold',
-                                  color: Colors.black,
-                                ),
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                    horizontal: 15,
-                                  ),
-                                  border: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                        width: 0, style: BorderStyle.none),
-                                  ),
-                                  filled: true,
-                                  hintText: "วันที่เริ่มทาน",
-                                  hintStyle: TextStyle(
-                                    fontFamily: 'SukhumvitSet-Medium',
-                                    color: Colors.grey[800],
-                                  ),
-                                  fillColor: AppColors.bgColor,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AddTimeAlertMedicine(halo)),
-                  );
-                  print('เลือกข้อมูล: $selectedNumber');
-                },
-                child: Text('หน้าถัดไป'),
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //           builder: (context) => AddTimeAlertMedicine(halo)),
+            //     );
+            //     print('เลือกข้อมูล: $selectedNumber');
+            //   },
+            //   child: Text('หน้าถัดไป'),
+            // ),
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
