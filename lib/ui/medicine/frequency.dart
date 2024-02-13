@@ -94,11 +94,12 @@ class _frequencyState extends State<frequency> {
       });
     });
   }
+
   void handleBottomSheetItemTap(String value) {
-  setState(() {
-    dropdownValue = value;
-  });
-}
+    setState(() {
+      dropdownValue = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,69 +154,72 @@ class _frequencyState extends State<frequency> {
               width: 10,
             ),
             Container(
-    width: 380,
-    child: ElevatedButton(
-      onPressed: () {
-        showModalBottomSheet<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return Column(
-              mainAxisSize: MainAxisSize.min, // Prevent wrapping content
-              children: <Widget>[
-                ListTile(
-                  title: Text(
-                    'ประจำวัน',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontFamily: 'SukhumvitSet-Medium',
-                      color: Colors.grey[800],
-                    ),
+              width: 380,
+              child: ElevatedButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Column(
+                        mainAxisSize:
+                            MainAxisSize.min, // Prevent wrapping content
+                        children: <Widget>[
+                          ListTile(
+                            title: Text(
+                              'ประจำวัน',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontFamily: 'SukhumvitSet-Medium',
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                            onTap: () => handleBottomSheetItemTap('ประจำวัน'),
+                          ),
+                          ListTile(
+                            title: Text(
+                              'วันของสัปดาห์',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontFamily: 'SukhumvitSet-Medium',
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                            onTap: () =>
+                                handleBottomSheetItemTap('วันของสัปดาห์'),
+                          ),
+                          ListTile(
+                            title: Text(
+                              'ช่วงวัน',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontFamily: 'SukhumvitSet-Medium',
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                            onTap: () => handleBottomSheetItemTap('ช่วงวัน'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.bgColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  onTap: () => handleBottomSheetItemTap('ประจำวัน'),
                 ),
-                ListTile(
-                  title: Text(
-                    'วันของสัปดาห์',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontFamily: 'SukhumvitSet-Medium',
-                      color: Colors.grey[800],
-                    ),
+                child: Text(
+                  dropdownValue ??
+                      "", // Display "เลือก" if no value is selected
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontFamily: 'SukhumvitSet-Medium',
+                    color: Colors.grey[800],
                   ),
-                  onTap: () => handleBottomSheetItemTap('วันของสัปดาห์'),
                 ),
-                ListTile(
-                  title: Text(
-                    'ช่วงวัน',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontFamily: 'SukhumvitSet-Medium',
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  onTap: () => handleBottomSheetItemTap('ช่วงวัน'),
-                ),
-              ],
-            );
-          },
-        );
-      },
-      child: Text(
-        dropdownValue ?? "เลือก", // Display "เลือก" if no value is selected
-        style: TextStyle(
-          fontSize: 22,
-          fontFamily: 'SukhumvitSet-Medium',
-          color: Colors.grey[800],
-        ),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.bgColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-      ),
-    ),
-  ),
+              ),
+            ),
             Row(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
