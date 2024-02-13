@@ -94,12 +94,68 @@ class _frequencyState extends State<frequency> {
       });
     });
   }
-
-  void handleBottomSheetItemTap(String value) {
-    setState(() {
-      dropdownValue = value;
-    });
+void handleBottomSheetItemTap(String value) {
+  if (value == 'วันของสัปดาห์') {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+              buildDaySelector('อา'),
+              buildDaySelector('จ'),
+              buildDaySelector('อ'),
+              buildDaySelector('พ'),
+              buildDaySelector('พฤ'),
+              buildDaySelector('ศ'),
+              buildDaySelector('ส'),
+              // Similar containers for remaining weekdays
+            ],
+          ),
+        );
+      },
+    );
+  } else {
+    // Handle other options ('ประจำวัน', 'ช่วงวัน')
   }
+}
+
+Widget buildDaySelector(String day) {
+  return GestureDetector(
+    onTap: () => handleDaySelection(day),
+    child: Container(
+      width: 60,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.blue, width: 2),
+        color: Colors.blue[200], // Background color
+        shape: BoxShape.circle, // Circular shape
+      ),
+      child: Center(
+        child: Text(
+          day,
+          style: TextStyle(
+            fontSize: 22,
+            fontFamily: 'SukhumvitSet-Medium',
+            color: Colors.grey[800],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+
+
+void handleDaySelection(String day) {
+  // Implement your logic to handle user's selection of a specific day
+  // For example, update dropdownValue and close the bottom sheet
+  setState(() {
+    dropdownValue = day;
+  });
+  Navigator.pop(context);
+}
 
   @override
   Widget build(BuildContext context) {
