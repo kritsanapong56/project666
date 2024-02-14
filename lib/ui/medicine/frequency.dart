@@ -15,6 +15,79 @@ class frequency extends StatefulWidget {
   State<frequency> createState() => _frequencyState();
 }
 
+class DateSelector extends StatefulWidget {
+  @override
+  _DateSelectorState createState() => _DateSelectorState();
+}
+
+class _DateSelectorState extends State<DateSelector> {
+  int _selectedValue = 1;
+  String _selectedType = 'Month';
+
+  @override
+  Widget build(BuildContext context) {
+    List<DropdownMenuItem<String>> _dropdownMenuItems = [
+      DropdownMenuItem(value: 'Month', child: Text('เดือน')),
+      DropdownMenuItem(value: 'Day', child: Text('วัน')),
+      DropdownMenuItem(value: 'Week', child: Text('สัปดาห์')),
+    ];
+
+    List<DropdownMenuItem<int>> _daysDropdownMenuItems =
+        List.generate(365, (index) {
+      return DropdownMenuItem(value: index + 1, child: Text('${index + 1}'));
+    });
+
+    List<DropdownMenuItem<int>> _monthsDropdownMenuItems =
+        List.generate(12, (index) {
+      return DropdownMenuItem(value: index + 1, child: Text('${index + 1}'));
+    });
+
+    List<DropdownMenuItem<int>> _weeksDropdownMenuItems =
+        List.generate(52, (index) {
+      return DropdownMenuItem(value: index + 1, child: Text('${index + 1}'));
+    });
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            DropdownButton(
+              value: _selectedType,
+              items: _dropdownMenuItems,
+              onChanged: (value) {
+                setState(() {
+                  _selectedType = value!;
+                  _selectedValue = 1; // Reset selected value when changing type
+                });
+              },
+            ),
+            DropdownButton(
+              value: _selectedValue,
+              items: _selectedType == 'Day'
+                  ? _daysDropdownMenuItems
+                  : (_selectedType == 'Month'
+                      ? _monthsDropdownMenuItems
+                      : _weeksDropdownMenuItems),
+              onChanged: (value) {
+                setState(() {
+                  _selectedValue = value!;
+                });
+              },
+            ),
+          ],
+        ),
+        SizedBox(height: 20),
+        Text(
+          'Selected ${_selectedType.toLowerCase()}: $_selectedValue',
+          style: TextStyle(fontSize: 20),
+        ),
+      ],
+    );
+  }
+}
+
 class _frequencyState extends State<frequency> {
   var _stxtHBD = "";
   TextEditingController txtHBD = TextEditingController();
@@ -94,6 +167,36 @@ class _frequencyState extends State<frequency> {
       });
     });
   }
+  
+
+                       
+
+
+  void pppppp(String value) {
+  setState(() {
+    dropdownValue = value;
+  });
+  
+  
+
+  if (value == 'ช่วงวัน') {
+    SizedBox(child: DateSelector(),
+    );
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: DateSelector()
+        );
+      }
+    );
+  }
+}
+
+
+
+
+
 void handleBottomSheetItemTap(String value) {
   if (value == 'วันของสัปดาห์') {
     showModalBottomSheet<void>(
@@ -121,7 +224,6 @@ void handleBottomSheetItemTap(String value) {
     // Handle other options ('ประจำวัน', 'ช่วงวัน')
   }
 }
-
 Widget buildDaySelector(String day) {
   return GestureDetector(
     onTap: () => handleDaySelection(day),
@@ -252,7 +354,7 @@ void handleDaySelection(String day) {
                                 color: Colors.grey[800],
                               ),
                             ),
-                            onTap: () => handleBottomSheetItemTap('ช่วงวัน'),
+                            onTap: () => pppppp('ช่วงวัน'),
                           ),
                         ],
                       );
