@@ -93,6 +93,14 @@ class _AddMedicine extends State<AddMedicine> {
     );
   }
 
+  String dropdownValue = 'เม็ด';
+  void handleBottomSheetItemTap(String value) {
+    setState(() {
+      dropdownValue = value;
+    });
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,7 +157,7 @@ class _AddMedicine extends State<AddMedicine> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
+                                        const Text(
                                           'ชื่อยา', // Your additional text here
                                           style: TextStyle(
                                             fontSize: 22.0,
@@ -157,7 +165,7 @@ class _AddMedicine extends State<AddMedicine> {
                                             color: Colors.black,
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                             height:
                                                 10), // Adjust the spacing between text and TextField
                                         TextField(
@@ -168,16 +176,16 @@ class _AddMedicine extends State<AddMedicine> {
                                             fontFamily: 'SukhumvitSet-Bold',
                                             color: Colors.black,
                                           ),
-                                          decoration: new InputDecoration(
+                                          decoration: InputDecoration(
                                             contentPadding:
                                                 const EdgeInsets.symmetric(
                                               vertical: 10.0,
                                               horizontal: 15,
                                             ),
-                                            border: new OutlineInputBorder(
+                                            border: const OutlineInputBorder(
                                               borderRadius:
-                                                  const BorderRadius.all(
-                                                const Radius.circular(20.0),
+                                                  BorderRadius.all(
+                                                Radius.circular(20.0),
                                               ),
                                               borderSide: BorderSide(
                                                 width: 0,
@@ -186,7 +194,7 @@ class _AddMedicine extends State<AddMedicine> {
                                             ),
                                             filled: true,
                                             hintText: "ชื่อยา",
-                                            hintStyle: new TextStyle(
+                                            hintStyle: TextStyle(
                                               fontFamily: 'SukhumvitSet-Medium',
                                               color: Colors.grey[800],
                                             ),
@@ -207,7 +215,7 @@ class _AddMedicine extends State<AddMedicine> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
+                                        const Text(
                                           'ปริมาณยาที่ทานต่อครั้ง', // Your additional text here
                                           style: TextStyle(
                                             fontSize: 22.0,
@@ -215,7 +223,7 @@ class _AddMedicine extends State<AddMedicine> {
                                             color: Colors.black,
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                             height:
                                                 10), // Adjust the spacing between text and TextField
                                         TextField(
@@ -271,7 +279,7 @@ class _AddMedicine extends State<AddMedicine> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
+                                        const Text(
                                           'หน่วย', // Your additional text here
                                           style: TextStyle(
                                             fontSize: 22.0,
@@ -279,46 +287,94 @@ class _AddMedicine extends State<AddMedicine> {
                                             color: Colors.black,
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                             height:
                                                 10), // Adjust the spacing between text and TextField
-                                        TextField(
-                                          controller: txtMedicineQuantity,
-                                          enabled: true,
-                                          keyboardType:
-                                              TextInputType.numberWithOptions(
-                                                  decimal: true),
-                                          inputFormatters: [
-                                            LengthLimitingTextInputFormatter(
-                                                10),
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp(r"^\d+(?:\.\d+)?$")),
-                                          ],
-                                          style: const TextStyle(
-                                            fontSize: 25.0,
-                                            fontFamily: 'SukhumvitSet-Bold',
-                                            color: Colors.black,
-                                          ),
-                                          decoration: InputDecoration(
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                              vertical: 10.0,
-                                              horizontal: 15,
+                                        Container(
+                                          width: 380,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              showModalBottomSheet<void>(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return Column(
+                                                    mainAxisSize: MainAxisSize
+                                                        .min, // Prevent wrapping content
+                                                    children: <Widget>[
+                                                      ListTile(
+                                                        title: Text('เม็ด',
+                                                          style: TextStyle(
+                                                            fontSize: 22,fontFamily:'SukhumvitSet-Medium',
+                                                            color: Colors.grey[800],
+                                                          ),
+                                                        ),
+                                                        onTap: () =>
+                                                            handleBottomSheetItemTap('เม็ด'),
+                                                      ),
+                                                      ListTile(
+                                                        title: Text('ออนซ์',
+                                                          style: TextStyle(
+                                                            fontSize: 22,fontFamily:'SukhumvitSet-Medium',
+                                                            color: Colors.grey[800],
+                                                          ),
+                                                        ),
+                                                        onTap: () =>
+                                                            handleBottomSheetItemTap('ออนซ์'),
+                                                      ),
+                                                      ListTile(
+                                                        title: Text('ช้อนชา',
+                                                          style: TextStyle(
+                                                            fontSize: 22,fontFamily:'SukhumvitSet-Medium',
+                                                            color: Colors.grey[800],
+                                                          ),
+                                                        ),
+                                                        onTap: () =>
+                                                            handleBottomSheetItemTap('ช้อนชา'),
+                                                      ),
+                                                      ListTile(
+                                                        title: Text(
+                                                          'ช้อนโต๊ะ',
+                                                          style: TextStyle(
+                                                            fontSize: 22,fontFamily:'SukhumvitSet-Medium',
+                                                            color: Colors.grey[800],
+                                                          ),
+                                                        ),
+                                                        onTap: () =>
+                                                            handleBottomSheetItemTap('ช้อนโต๊ะ'),
+                                                      ),
+                                                      ListTile(
+                                                        title: Text('มิลลิกรัม',style: TextStyle(
+                                                            fontSize: 22,fontFamily:'SukhumvitSet-Medium',
+                                                            color: Colors.grey[800],
+                                                          ),
+                                                        ),
+                                                        onTap: () =>
+                                                            handleBottomSheetItemTap('มิลลิกรัม'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  AppColors.bgColor,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
                                             ),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.0),
-                                              borderSide: BorderSide(
-                                                  width: 0,
-                                                  style: BorderStyle.none),
+                                            child: Text(
+                                              dropdownValue ??
+                                                  "", // Display "เลือก" if no value is selected
+                                              style: TextStyle(
+                                                fontSize: 22,
+                                                fontFamily:
+                                                    'SukhumvitSet-Medium',
+                                                color: Colors.grey[800],
+                                              ),
                                             ),
-                                            filled: true,
-                                            hintText: "หน่วย",
-                                            hintStyle: TextStyle(
-                                              fontFamily: 'SukhumvitSet-Medium',
-                                              color: Colors.grey[800],
-                                            ),
-                                            fillColor: AppColors.bgColor,
                                           ),
                                         ),
                                       ],
@@ -502,8 +558,8 @@ class _AddMedicine extends State<AddMedicine> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
-                            shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
                                 mediaQuery(context, 'h', 50),
                               ),
                               side: BorderSide(

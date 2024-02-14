@@ -22,31 +22,62 @@ class DateSelector extends StatefulWidget {
 
 class _DateSelectorState extends State<DateSelector> {
   int _selectedValue = 1;
-  String _selectedType = 'Month';
+  String _selectedType = 'Day';
 
   @override
   Widget build(BuildContext context) {
     List<DropdownMenuItem<String>> _dropdownMenuItems = [
-      DropdownMenuItem(value: 'Month', child: Text('เดือน')),
-      DropdownMenuItem(value: 'Day', child: Text('วัน')),
-      DropdownMenuItem(value: 'Week', child: Text('สัปดาห์')),
+      const DropdownMenuItem(
+          value: 'Day',
+          child: Text(
+            'วัน',
+            style: TextStyle(fontSize: 25),
+          )
+          
+          ),
+      const DropdownMenuItem(
+          value: 'Week',
+          child: Text(
+            'สัปดาห์',
+            style: TextStyle(fontSize: 25),
+          )),
+      const DropdownMenuItem(
+          value: 'Month',
+          child: Text(
+            'เดือน',
+            style: TextStyle(fontSize: 25),
+          )),
     ];
 
     List<DropdownMenuItem<int>> _daysDropdownMenuItems =
         List.generate(365, (index) {
-      return DropdownMenuItem(value: index + 1, child: Text('${index + 1}'));
+      return DropdownMenuItem(
+          value: index + 1,
+          child: Text(
+            '${index + 1}',
+            style: const TextStyle(fontSize: 25),
+          ));
     });
 
     List<DropdownMenuItem<int>> _monthsDropdownMenuItems =
         List.generate(12, (index) {
-      return DropdownMenuItem(value: index + 1, child: Text('${index + 1}'));
+      return DropdownMenuItem(
+          value: index + 1,
+          child: Text(
+            '${index + 1}',
+            style: const TextStyle(fontSize: 25),
+          ));
     });
 
     List<DropdownMenuItem<int>> _weeksDropdownMenuItems =
         List.generate(52, (index) {
-      return DropdownMenuItem(value: index + 1, child: Text('${index + 1}'));
+      return DropdownMenuItem(
+          value: index + 1,
+          child: Text(
+            '${index + 1}',
+            style: const TextStyle(fontSize: 25),
+          ));
     });
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -78,11 +109,14 @@ class _DateSelectorState extends State<DateSelector> {
             ),
           ],
         ),
-        SizedBox(height: 20),
-        Text(
-          'Selected ${_selectedType.toLowerCase()}: $_selectedValue',
-          style: TextStyle(fontSize: 20),
+        SizedBox(height: 30),
+        Container( 
+          padding: const EdgeInsets.only(bottom: 40),
+        child: Text(
+          'เลือก ${_selectedType.toLowerCase()}: $_selectedValue',
+          style: TextStyle(fontSize: 25),
         ),
+    ),
       ],
     );
   }
@@ -167,97 +201,105 @@ class _frequencyState extends State<frequency> {
       });
     });
   }
-  
 
-                       
+  // void pppppp(String value) {
+  //   setState(() {
+  //     dropdownValue = value;
+  //   });
+  //   if (value == 'ช่วงวัน') {
+  //     SizedBox(
+  //       child: DateSelector(),
+  //     );
+  //     showModalBottomSheet<void>(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return SingleChildScrollView(child: DateSelector());
+  //         });
+  //   }
+  // }
 
-
-  void pppppp(String value) {
-  setState(() {
-    dropdownValue = value;
-  });
-  
-  
-
-  if (value == 'ช่วงวัน') {
-    SizedBox(child: DateSelector(),
-    );
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: DateSelector()
-        );
-      }
-    );
+  void handleBottomSheetItemTap(String value) {
+    if (value == 'วันของสัปดาห์') {
+      showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 200,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                buildDaySelector('อา'),
+                buildDaySelector('จ'),
+                buildDaySelector('อ'),
+                buildDaySelector('พ'),
+                buildDaySelector('พฤ'),
+                buildDaySelector('ศ'),
+                buildDaySelector('ส'),
+                // Similar containers for remaining weekdays
+              ],
+            ),
+          );
+        },
+      );
+    }
+      if (value == 'ช่วงวัน') {
+      SizedBox(
+        child: DateSelector(),
+      );
+      showModalBottomSheet<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return SingleChildScrollView(
+              child: DateSelector()
+              );
+          });
+    } 
+    else {
+      // Handle other options ('ประจำวัน', 'ช่วงวัน')
+    }
   }
-}
 
-
-
-
-
-void handleBottomSheetItemTap(String value) {
-  if (value == 'วันของสัปดาห์') {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: 200,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              buildDaySelector('อา'),
-              buildDaySelector('จ'),
-              buildDaySelector('อ'),
-              buildDaySelector('พ'),
-              buildDaySelector('พฤ'),
-              buildDaySelector('ศ'),
-              buildDaySelector('ส'),
-              // Similar containers for remaining weekdays
-            ],
-          ),
-        );
-      },
-    );
-  } else {
-    // Handle other options ('ประจำวัน', 'ช่วงวัน')
-  }
-}
-Widget buildDaySelector(String day) {
-  return GestureDetector(
-    onTap: () => handleDaySelection(day),
-    child: Container(
-      width: 60,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.blue, width: 2),
-        color: Colors.blue[200], // Background color
-        shape: BoxShape.circle, // Circular shape
-      ),
-      child: Center(
-        child: Text(
-          day,
-          style: TextStyle(
-            fontSize: 22,
-            fontFamily: 'SukhumvitSet-Medium',
-            color: Colors.grey[800],
+  Widget buildDaySelector(String day) {
+    return GestureDetector(
+      onTap: () => handleDaySelection(day),
+      child: Container(
+        width: 58,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.blue, width: 2),
+          color: Colors.blue[200], // Background color
+          shape: BoxShape.circle, // Circular shape
+        ),
+        child: Center(
+          child: Text(
+            day,
+            style: TextStyle(
+              fontSize: 22,
+              fontFamily: 'SukhumvitSet-Medium',
+              color: Colors.grey[800],
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
+    void handleDuringtheday(String day) {
+    // Implement your logic to handle user's selection of a specific day
+    // For example, update dropdownValue and close the bottom sheet
+    setState(() {
+      dropdownValue = day;
+    });
+    Navigator.pop(context);
+  }
 
-
-void handleDaySelection(String day) {
-  // Implement your logic to handle user's selection of a specific day
-  // For example, update dropdownValue and close the bottom sheet
-  setState(() {
-    dropdownValue = day;
-  });
-  Navigator.pop(context);
-}
+  void handleDaySelection(String day) {
+    // Implement your logic to handle user's selection of a specific day
+    // For example, update dropdownValue and close the bottom sheet
+    setState(() {
+      dropdownValue = day;
+    });
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -354,7 +396,7 @@ void handleDaySelection(String day) {
                                 color: Colors.grey[800],
                               ),
                             ),
-                            onTap: () => pppppp('ช่วงวัน'),
+                            onTap: () => handleBottomSheetItemTap('ช่วงวัน'),
                           ),
                         ],
                       );
