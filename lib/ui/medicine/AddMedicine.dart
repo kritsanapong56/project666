@@ -24,18 +24,14 @@ class AddMedicine extends StatefulWidget {
 
 class _AddMedicine extends State<AddMedicine> {
   TextEditingController txtMedicine = TextEditingController();
+  TextEditingController txtMedicineQuantity = TextEditingController();
 
   int _selectedIndex = -1;
   var _selectedTimeTakeId = "0";
   // List<String> _options = ['ก่อนอาหาร', 'หลังอาหาร', 'ทานพร้อมอาหาร','ทานตามอาการ'];
-  List<ModelTimeTakeMedicine> listTimeTake = [
-    // ModelTimeTakeMedicine(timeTakeId: "1", timeTakeName: 'ก่อนอาหาร'),
-    // ModelTimeTakeMedicine(timeTakeId: "2", timeTakeName: 'หลังอาหาร'),
-    // ModelTimeTakeMedicine(timeTakeId: "3", timeTakeName: 'ทานพร้อมอาหาร'),
-    // ModelTimeTakeMedicine(timeTakeId: "4", timeTakeName: 'ทานตามอาการ'),
-  ];
 
-  get txtMedicineQuantity => null;
+
+
   @override
   void initState() {
     if (widget.medicine_id.toString().isNotEmpty) {
@@ -44,6 +40,7 @@ class _AddMedicine extends State<AddMedicine> {
     if (widget.medicine_name.toString().isNotEmpty) {
       txtMedicine.text = widget.medicine_name;
     }
+
     // loadDataTimeTake();
     super.initState();
   }
@@ -57,43 +54,43 @@ class _AddMedicine extends State<AddMedicine> {
   //     });
   //   });
   // }
-  Widget _buildChipsTypeTime() {
-    List<Widget> chips = [];
+  // Widget _buildChipsTypeTime() {
+  //   List<Widget> chips = [];
 
-    for (int i = 0; i < listTimeTake.length; i++) {
-      ChoiceChip choiceChip = ChoiceChip(
-        selected: _selectedIndex == i,
-        label: Text(listTimeTake[i].timeTakeName,
-            style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'SukhumvitSet-SemiBold',
-                fontSize: 25)),
-        elevation: 3,
-        pressElevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        backgroundColor: Color(0xffC2C2C3),
-        selectedColor: AppColors.colorMain,
-        onSelected: (bool selected) {
-          setState(() {
-            if (selected) {
-              _selectedIndex = i;
-              _selectedTimeTakeId = listTimeTake[i].timeTakeId;
-            }
-          });
-        },
-      );
-      chips.add(choiceChip);
-    }
-    return Wrap(
-      spacing: 6.0,
-      runSpacing: 6.0,
-      children: chips,
-    );
-  }
+  //   for (int i = 0; i < listTimeTake.length; i++) {
+  //     ChoiceChip choiceChip = ChoiceChip(
+  //       selected: _selectedIndex == i,
+  //       label: Text(listTimeTake[i].timeTakeName,
+  //           style: TextStyle(
+  //               color: Colors.black,
+  //               fontFamily: 'SukhumvitSet-SemiBold',
+  //               fontSize: 25)),
+  //       elevation: 3,
+  //       pressElevation: 5,
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(20.0),
+  //       ),
+  //       backgroundColor: Color(0xffC2C2C3),
+  //       selectedColor: AppColors.colorMain,
+  //       onSelected: (bool selected) {
+  //         setState(() {
+  //           if (selected) {
+  //             _selectedIndex = i;
+  //             _selectedTimeTakeId = listTimeTake[i].timeTakeId;
+  //           }
+  //         });
+  //       },
+  //     );
+  //     chips.add(choiceChip);
+  //   }
+  //   return Wrap(
+  //     spacing: 6.0,
+  //     runSpacing: 6.0,
+  //     children: chips,
+  //   );
+  // }
 
-  String dropdownValue = 'เม็ด';
+  String dropdownValue = 'หน่วยยา';
   void handleBottomSheetItemTap(String value) {
     setState(() {
       dropdownValue = value;
@@ -280,7 +277,7 @@ class _AddMedicine extends State<AddMedicine> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         const Text(
-                                          'หน่วย', // Your additional text here
+                                          'หน่วยยา', // Your additional text here
                                           style: TextStyle(
                                             fontSize: 22.0,
                                             fontFamily: 'SukhumvitSet-Bold',
@@ -366,8 +363,7 @@ class _AddMedicine extends State<AddMedicine> {
                                               ),
                                             ),
                                             child: Text(
-                                              dropdownValue ??
-                                                  "", // Display "เลือก" if no value is selected
+                                              dropdownValue, // Display "เลือก" if no value is selected
                                               style: TextStyle(
                                                 fontSize: 22,
                                                 fontFamily:
@@ -381,10 +377,10 @@ class _AddMedicine extends State<AddMedicine> {
                                     ),
                                   ),
 
-                                  Container(
-                                      padding: EdgeInsets.only(top: 20),
-                                      alignment: Alignment.center,
-                                      child: _buildChipsTypeTime())
+                                  // Container(
+                                  //     padding: EdgeInsets.only(top: 20),
+                                  //     alignment: Alignment.center,
+                                  //     child: _buildChipsTypeTime())
                                 ],
                               ),
                             )
@@ -476,26 +472,26 @@ class _AddMedicine extends State<AddMedicine> {
                       },
                     ),
                   ),
-                  // onPressed: () {
-                  //   if(txtMedicine.text.isNotEmpty && _selectedIndex > -1) {
-                  //     AppUrl.objAddItemMedicine.nameMedicine = txtMedicine.text.toString();
-                  //     AppUrl.objAddItemMedicine.timeTakeId = _selectedTimeTakeId;
-                  //     _pushPagetest(context,false);
-                  //    }else {
-                  //     _openPopupInvalidate(context,"กรุณากรอกข้อมูลให้ครบถ้วน");
-                  //   }
-                  // },
-
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const frequency(),
-                      ),
-                    );
-                    // ทำอะไรก็ตามที่คุณต้องการเมื่อกดปุ่ม "หน้าถัดไป"
-                    // ในตัวอย่างนี้เราจะแสดงข้อมูลที่ถูกเลือก
+                    if(txtMedicine.text.isNotEmpty && txtMedicineQuantity.text.isNotEmpty ) {
+                      AppUrl.objAddItemMedicine.nameMedicine = txtMedicine.text.toString();
+                      AppUrl.objAddItemMedicine.unitSubMedicineName = txtMedicineQuantity.text.toString();
+                      _pushPagetest(context,false);
+                     }else {
+                      _openPopupInvalidate(context,"กรุณากรอกข้อมูลให้ครบถ้วน");
+                    }
                   },
+
+                  // onPressed: () {
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => const frequency(),
+                  //     ),
+                  //   );
+                  //   // ทำอะไรก็ตามที่คุณต้องการเมื่อกดปุ่ม "หน้าถัดไป"
+                  //   // ในตัวอย่างนี้เราจะแสดงข้อมูลที่ถูกเลือก
+                  // },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

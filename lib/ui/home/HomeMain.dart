@@ -1,34 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_safealert/model/ModelMedicineAlarmNext.dart';
 import 'package:flutter_alarm_safealert/tool/loader.dart';
 import 'package:flutter_event_calendar/flutter_event_calendar.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:group_list_view/group_list_view.dart';
 import 'package:intl/intl.dart';
 import '../../alarm_notification.dart';
-import '../../model/ModelItemMedicine.dart';
 import '../../model/ModelMedicine.dart';
 import '../../model/ModelRegister.dart';
-import '../../model/ModelTimeTakeMedicine.dart';
 import '../../model/ModelAlarmMedicine.dart';
 import '../../tool/color.dart';
-import '../../tool/pref.dart';
 import '../../tool/url.dart';
-import '../../ui/dialog/alert_alarm_medicine.dart';
-import '../../ui/dialog/another_remark_select.dart';
-import '../../ui/dialog/remark_select.dart';
-import '../../ui/dialog/time_alarm_next.dart';
 import '../../ui/medicine/AddMedicine.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:collection/collection.dart";
-
 import '../MainMenu.dart';
 
 class HomeMain extends StatefulWidget {
@@ -46,16 +35,25 @@ class _HomeMainState extends State<HomeMain> {
   List<ModelMedicineAlarmNext> gill = [];
   List<ModelMedicine> listMedicine = [
     ModelMedicine(
-        id: 1, name: 'แก้ภูมแพ้', dateTime: DateTime.now(), messageDateTime: "ไม่ได้ทานยา"),
+        id: 1,
+        name: 'แก้ภูมแพ้',
+        dateTime: DateTime.now(),
+        messageDateTime: "ไม่ได้ทานยา"),
   ];
   Map<String, List<ModelMedicine>> _elements = {
     '08:00': [
       ModelMedicine(
-          id: 1, name: 'แก้ภูมแพ้', dateTime: DateTime.now(), messageDateTime: "ไม่ได้ทานยา"),
+          id: 1,
+          name: 'แก้ภูมแพ้',
+          dateTime: DateTime.now(),
+          messageDateTime: "ไม่ได้ทานยา"),
     ],
     '12:00': [
       ModelMedicine(
-          id: 1, name: 'แก้ภูมแพ้', dateTime: DateTime.now(), messageDateTime: "ไม่ได้ทานยา"),
+          id: 1,
+          name: 'แก้ภูมแพ้',
+          dateTime: DateTime.now(),
+          messageDateTime: "ไม่ได้ทานยา"),
     ],
   };
   var strEmpty = "";
@@ -74,9 +72,10 @@ class _HomeMainState extends State<HomeMain> {
     listAlarmMedicine.clear();
     final list = await ModelAlarmMedicine.getMedicineToDay(selectedDate);
     setState(() {
-      listAlarmMedicine =
-          List<ModelAlarmMedicine>.from(list?.map((i) => ModelAlarmMedicine.fromMap(i)));
-      resultAlarmMedicine = listAlarmMedicine.groupListsBy((student) => student.set_time_alarm);
+      listAlarmMedicine = List<ModelAlarmMedicine>.from(
+          list?.map((i) => ModelAlarmMedicine.fromMap(i)));
+      resultAlarmMedicine =
+          listAlarmMedicine.groupListsBy((student) => student.set_time_alarm);
       if (listAlarmMedicine.isEmpty) {
         strEmpty = 'ไม่มีรายชื่อยา';
       }
@@ -91,7 +90,8 @@ class _HomeMainState extends State<HomeMain> {
     final AlarmNotification alarmNotification = AlarmNotification.instance;
     await alarmNotification.init();
 
-    final FlutterLocalNotificationsPlugin localNotif = alarmNotification.localNotif;
+    final FlutterLocalNotificationsPlugin localNotif =
+        alarmNotification.localNotif;
     localNotif.cancelAll();
 
     final now = DateTime.now();
@@ -105,7 +105,8 @@ class _HomeMainState extends State<HomeMain> {
         id: int.parse(med.alarm_id),
         title: med.medicine_name,
         body: med.msg_num_medicine,
-        dateTime: DateTime(now.year, now.month, now.day, int.parse(hr), int.parse(min)),
+        dateTime: DateTime(
+            now.year, now.month, now.day, int.parse(hr), int.parse(min)),
         payload: json.encode(med.toJson()),
       );
     }
@@ -119,10 +120,10 @@ class _HomeMainState extends State<HomeMain> {
   }
 
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     final bool isCurrentDate = dateOutputDate.year == DateTime.now().year &&
-      dateOutputDate.month == DateTime.now().month &&
-      dateOutputDate.day == DateTime.now().day;
+        dateOutputDate.month == DateTime.now().month &&
+        dateOutputDate.day == DateTime.now().day;
 
     return Scaffold(
         backgroundColor: AppColors.bdColor,
@@ -131,8 +132,8 @@ class _HomeMainState extends State<HomeMain> {
           title: new Text(
             AppUrl.objRegister.name.toString().isNotEmpty
                 ? AppUrl.objRegister.name
-                : "ชื่อ - นามสุกล",
-            style: TextStyle(fontFamily: 'SukhumvitSet-Bold'),
+                : "กรุณาเพิ่ม ชื่อ - นามสุกล",
+            style: const TextStyle(fontFamily: 'SukhumvitSet-Bold'),
           ),
           leading: new Padding(
               padding: const EdgeInsets.all(8.0),
@@ -146,7 +147,7 @@ class _HomeMainState extends State<HomeMain> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  Column(
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       ImageIcon(
@@ -161,19 +162,21 @@ class _HomeMainState extends State<HomeMain> {
                           right: 2,
                           top: 10,
                           child: new Container(
-                            padding: EdgeInsets.all(2),
+                            padding: const EdgeInsets.all(2),
                             decoration: new BoxDecoration(
                               color: Colors.red,
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            constraints: BoxConstraints(
+                            constraints: const BoxConstraints(
                               minWidth: 14,
                               minHeight: 14,
                             ),
                             child: Text(
                               '$_counter',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -183,7 +186,7 @@ class _HomeMainState extends State<HomeMain> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(right: 10),
+              padding: const EdgeInsets.only(right: 10),
               child: IconButton(
                 tooltip: 'add',
                 icon: const Icon(
@@ -210,8 +213,8 @@ class _HomeMainState extends State<HomeMain> {
                       day: dateOutputDate.day,
                       calendarType: CalendarType.GREGORIAN,
                     ),
-                    calendarOptions:
-                        CalendarOptions(toggleViewType: false, viewType: ViewType.DAILY),
+                    calendarOptions: CalendarOptions(
+                        toggleViewType: false, viewType: ViewType.DAILY),
                     dayOptions: DayOptions(
                       compactMode: false,
                       dayFontSize: 16.0,
@@ -228,30 +231,38 @@ class _HomeMainState extends State<HomeMain> {
                     calendarType: CalendarType.GREGORIAN,
                     calendarLanguage: 'en',
                     onInit: () {
-                      DateTime dateTemp = DateTime(
-                          dateOutputDate.year, dateOutputDate.month, dateOutputDate.day, 0, 0);
+                      DateTime dateTemp = DateTime(dateOutputDate.year,
+                          dateOutputDate.month, dateOutputDate.day, 0, 0);
 
-                      var sDate = DateFormat('yyyy-MM-dd').format(dateTemp).toString();
+                      var sDate =
+                          DateFormat('yyyy-MM-dd').format(dateTemp).toString();
                       selectedDate = sDate;
                       var inputFormat = DateFormat('yyyy-MM-dd');
-                      dateOutputDate = inputFormat.parse(selectedDate); // <-- dd/MM 24H format
+                      dateOutputDate = inputFormat
+                          .parse(selectedDate); // <-- dd/MM 24H format
                       loadDataMedicineToDay(selectedDate);
                     },
                     onDateTimeReset: (date) {
-                      DateTime dateTemp = DateTime(date.year, date.month, date.day, 0, 0);
+                      DateTime dateTemp =
+                          DateTime(date.year, date.month, date.day, 0, 0);
 
-                      var sDate = DateFormat('yyyy-MM-dd').format(dateTemp).toString();
+                      var sDate =
+                          DateFormat('yyyy-MM-dd').format(dateTemp).toString();
                       selectedDate = sDate;
                       var inputFormat = DateFormat('yyyy-MM-dd');
-                      dateOutputDate = inputFormat.parse(selectedDate); // <-- dd/MM 24H format
+                      dateOutputDate = inputFormat
+                          .parse(selectedDate); // <-- dd/MM 24H format
                       loadDataMedicineToDay(selectedDate);
                     },
                     onChangeDateTime: (date) {
-                      DateTime dateTemp = DateTime(date.year, date.month, date.day, 0, 0);
-                      var sDate = DateFormat('yyyy-MM-dd').format(dateTemp).toString();
+                      DateTime dateTemp =
+                          DateTime(date.year, date.month, date.day, 0, 0);
+                      var sDate =
+                          DateFormat('yyyy-MM-dd').format(dateTemp).toString();
                       selectedDate = sDate;
                       var inputFormat = DateFormat('yyyy-MM-dd');
-                      dateOutputDate = inputFormat.parse(selectedDate); // <-- dd/MM 24H format
+                      dateOutputDate = inputFormat
+                          .parse(selectedDate); // <-- dd/MM 24H format
                       loadDataMedicineToDay(selectedDate);
                     }
                     // onChangeDateTime: (date){
@@ -299,16 +310,20 @@ class _HomeMainState extends State<HomeMain> {
                 // ),
               ),
 
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
                 decoration: BoxDecoration(
-                    color: AppColors.colorMain, borderRadius: BorderRadius.circular(25.0)),
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: Text(DateFormat.yMMMd().format(dateOutputDate).toString(),
-                    style: TextStyle(
-                        color: Colors.black, fontSize: 20.0, fontFamily: 'SukhumvitSet-Bold'),
+                    color: AppColors.colorMain,
+                    borderRadius: BorderRadius.circular(25.0)),
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: Text(
+                    DateFormat.yMMMd().format(dateOutputDate).toString(),
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                        fontFamily: 'SukhumvitSet-Bold'),
                     textAlign: TextAlign.center),
               ),
 
@@ -321,7 +336,7 @@ class _HomeMainState extends State<HomeMain> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Expanded(
+                          const Expanded(
                             flex: 5,
                             child: Image(
                               image: AssetImage('assets/images/bell.png'),
@@ -329,7 +344,7 @@ class _HomeMainState extends State<HomeMain> {
                               width: 190,
                             ),
                           ),
-                          Center(
+                          const Center(
                             child: Text("คุณยังไม่มีรายการแจ้งเตือน",
                                 style: TextStyle(
                                     color: Colors.grey,
@@ -337,53 +352,60 @@ class _HomeMainState extends State<HomeMain> {
                                     fontFamily: 'SukhumvitSet-Bold'),
                                 textAlign: TextAlign.center),
                           ),
-                           if (isCurrentDate)
-                           // ถ้าวันที่ตรงจะแสดง ถ้าเป็น true
-                          Container(
-                            width: double.maxFinite,
-                            margin: EdgeInsets.only(top: 20.0, bottom: 20, left: 10, right: 10),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 5,
-                                  child: Container(
-                                    margin: EdgeInsets.only(right: 5),
-                                    width: double.maxFinite,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        padding: EdgeInsets.only(
-                                            top: 10, bottom: 10.0, left: 20, right: 20),
-                                        backgroundColor: AppColors.colorMain,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(25.0)),
-                                        elevation: 15.0,
-                                      ),
-                                      onPressed: () {
-                                        // _showTimeAlarmNext();
-                                        // _showAlertAlarmMedicine();
-                                        // _showRemarkSelect();
-                                        _pushPageAddMedicine(context, false);
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            child: Text(
-                                              "เพิ่มยา",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 35,
-                                                  fontFamily: 'SukhumvitSet-Bold'),
+                          if (isCurrentDate)
+                            // ถ้าวันที่ตรงจะแสดง ถ้าเป็น true
+                            Container(
+                              width: double.maxFinite,
+                              margin: const EdgeInsets.only(
+                                  top: 20.0, bottom: 20, left: 10, right: 10),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 5,
+                                    child: Container(
+                                      margin: const EdgeInsets.only(right: 5),
+                                      width: double.maxFinite,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          padding: const EdgeInsets.only(
+                                              top: 10,
+                                              bottom: 10.0,
+                                              left: 20,
+                                              right: 20),
+                                          backgroundColor: AppColors.colorMain,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(25.0)),
+                                          elevation: 15.0,
+                                        ),
+                                        onPressed: () {
+                                          // _showTimeAlarmNext();
+                                          // _showAlertAlarmMedicine();
+                                          // _showRemarkSelect();
+                                          _pushPageAddMedicine(context, false);
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              child: const Text(
+                                                "เพิ่มยา",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 35,
+                                                    fontFamily:
+                                                        'SukhumvitSet-Bold'),
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     )
@@ -391,14 +413,17 @@ class _HomeMainState extends State<HomeMain> {
                       child: GroupListView(
                       sectionsCount: resultAlarmMedicine.keys.toList().length,
                       countOfItemInSection: (int section) {
-                        return resultAlarmMedicine.values.toList()[section].length;
+                        return resultAlarmMedicine.values
+                            .toList()[section]
+                            .length;
                       },
                       itemBuilder: (BuildContext context, IndexPath index) {
                         var num_eat = resultAlarmMedicine.values
                             .toList()[index.section][index.index]
                             .msg_skip;
                         return Card(
-                            margin: EdgeInsets.only(left: 10, right: 10, bottom: 5),
+                            margin:
+                                const EdgeInsets.only(left: 10, right: 10, bottom: 5),
                             color: Colors.white,
                             // สี
                             // shadowColor: Colors.red.withAlpha(100), // สีของเงา
@@ -417,42 +442,47 @@ class _HomeMainState extends State<HomeMain> {
                                     ? Image.network(resultAlarmMedicine.values
                                         .toList()[index.section][index.index]
                                         .img_medicine)
-                                    : ImageIcon(
+                                    : const ImageIcon(
                                         AssetImage("assets/images/pills.png"),
                                         size: 40,
                                         color: Colors.black,
                                       ),
                                 title: Text(
                                   "${resultAlarmMedicine.values.toList()[index.section][index.index].medicine_name}\n${resultAlarmMedicine.values.toList()[index.section][index.index].msg_num_medicine}",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 22.0,
                                       fontFamily: 'SukhumvitSet-Medium',
                                       color: Colors.black),
                                 ),
                                 subtitle: Text(
-                                  int.parse(num_eat) > 0 ? "ทานยาแล้ว" : "ไม่ได้ทานยา",
+                                  int.parse(num_eat) > 0
+                                      ? "ทานยาแล้ว"
+                                      : "ไม่ได้ทานยา",
                                   style: TextStyle(
                                       fontSize: 18.0,
                                       fontFamily: 'SukhumvitSet-Bold',
-                                      color: int.parse(num_eat) > 0 ? Colors.green : Colors.red),
+                                      color: int.parse(num_eat) > 0
+                                          ? Colors.green
+                                          : Colors.red),
                                 ),
                               ),
                             ));
                       },
                       groupHeaderBuilder: (BuildContext context, int section) {
                         return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 8),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   resultAlarmMedicine.keys.toList()[section],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 20,
                                       fontFamily: 'SukhumvitSet-Bold',
                                       fontWeight: FontWeight.w600),
                                 ),
-                                Text(
+                                const Text(
                                   "ยาทั้งหมด",
                                   style: TextStyle(
                                       fontSize: 20,
@@ -462,8 +492,10 @@ class _HomeMainState extends State<HomeMain> {
                               ],
                             ));
                       },
-                      separatorBuilder: (context, index) => SizedBox(height: 10),
-                      sectionSeparatorBuilder: (context, section) => SizedBox(height: 10),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 10),
+                      sectionSeparatorBuilder: (context, section) =>
+                          const SizedBox(height: 10),
                     )
 
                       //---------//
