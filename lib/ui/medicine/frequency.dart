@@ -7,6 +7,11 @@ import 'package:flutter_alarm_safealert/ui/medicine/AddTimeAlertMedicine.dart';
 import 'package:flutter_alarm_safealert/ui/medicine/TypeMedicine.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:weekday_selector/weekday_selector.dart';
+
+
+StreamController<List<String>> selectedDaysController =
+    StreamController<List<String>>.broadcast();
 
 class frequency extends StatefulWidget {
   const frequency({super.key});
@@ -23,7 +28,6 @@ class DateSelector extends StatefulWidget {
 class _DateSelectorState extends State<DateSelector> {
   int _selectedValue = 1;
   String _selectedType = 'Day';
-
   @override
   Widget build(BuildContext context) {
     List<DropdownMenuItem<String>> _dropdownMenuItems = [
@@ -32,9 +36,7 @@ class _DateSelectorState extends State<DateSelector> {
           child: Text(
             'วัน',
             style: TextStyle(fontSize: 25),
-          )
-          
-          ),
+          )),
       const DropdownMenuItem(
           value: 'Week',
           child: Text(
@@ -85,16 +87,6 @@ class _DateSelectorState extends State<DateSelector> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DropdownButton(
-              value: _selectedType,
-              items: _dropdownMenuItems,
-              onChanged: (value) {
-                setState(() {
-                  _selectedType = value!;
-                  _selectedValue = 1; // Reset selected value when changing type
-                });
-              },
-            ),
-            DropdownButton(
               value: _selectedValue,
               items: _selectedType == 'Day'
                   ? _daysDropdownMenuItems
@@ -107,18 +99,52 @@ class _DateSelectorState extends State<DateSelector> {
                 });
               },
             ),
+             DropdownButton(
+              value: _selectedType,
+              items: _dropdownMenuItems,
+              onChanged: (value) {
+                setState(() {
+                  _selectedType = value!;
+                  _selectedValue = 1; // Reset selected value when changing type
+                });
+              },
+            ),
           ],
         ),
         SizedBox(height: 30),
-        Container( 
+        Container(
           padding: const EdgeInsets.only(bottom: 40),
-        child: Text(
-          'เลือก ${_selectedType.toLowerCase()}: $_selectedValue',
-          style: TextStyle(fontSize: 25),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "วันที่เลือก: ${getSelectedDate()}",
+                style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(width: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // No data needs to be passed
+                },
+                child: Text('ตกลง'),
+              ),
+            ],
+          ),
         ),
-    ),
       ],
     );
+  }
+    String getSelectedDate() {
+    switch (_selectedType) {
+      case 'Day':
+        return "$_selectedValue วัน";
+      case 'Month':
+        return "$_selectedValue เดือน";
+      case 'Week':
+        return "$_selectedValue สัปดาห์";
+      default:
+        return "";
+    }
   }
 }
 
@@ -128,6 +154,44 @@ class _frequencyState extends State<frequency> {
   int selectedNumber = 1;
   String halo = "0";
   String dropdownValue = 'ประจำวัน';
+  List<String> selectedDays = [];
+  final values = List.filled(7, true);
+  
+
+  String getSelectedDaysString(List<bool> values) {
+    List<String> selectedDays = [];
+    for (int i = 0; i < values.length; i++) {
+      if (values[i]) {
+        // Convert index to day name or any representation you prefer
+        selectedDays.add(getDayNameFromIndex(i));
+      }
+    }
+    return selectedDays.isEmpty ? "ไม่ได้เลือก" : selectedDays.join(', ');
+  }
+
+  String getDayNameFromIndex(int index) {
+    // Convert index to day name, customize as needed
+    switch (index) {
+      case 0:
+        return 'อา';
+      case 1:
+        return 'จ';
+      case 2:
+        return 'อ';
+      case 3:
+        return 'พ';
+      case 4:
+        return 'พฤ';
+      case 5:
+        return 'ศ';
+      case 6:
+        return 'ส';
+      // ... Continue for other days
+      default:
+        return '';
+    }
+  }
+
   void dateHBD(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {
@@ -220,83 +284,117 @@ class _frequencyState extends State<frequency> {
 
   void handleBottomSheetItemTap(String value) {
     if (value == 'วันของสัปดาห์') {
-      showModalBottomSheet<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            height: 200,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                buildDaySelector('อา'),
-                buildDaySelector('จ'),
-                buildDaySelector('อ'),
-                buildDaySelector('พ'),
-                buildDaySelector('พฤ'),
-                buildDaySelector('ศ'),
-                buildDaySelector('ส'),
-                // Similar containers for remaining weekdays
-              ],
+  showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return Column(
+        children: [
+          // Text widget at the top
+          const Padding(
+            padding: EdgeInsets.only(bottom: 16.0), // Adjust bottom padding as needed
+            child: Text(
+              'เลือกวันของสัปดาห์',
+              style: TextStyle(
+                fontSize: 25,fontWeight: FontWeight.bold,
+              ),
             ),
-          );
-        },
+          ),
+          // WeekdaySelector widget with custom size
+          SizedBox(
+            height: 90, // Set the desired heightwidth: double.infinity, // Set the desired width (here, using full width)
+            child: WeekdaySelector(
+              onChanged: (int day) {
+                setState(() {
+                  // Use module % 7 as Sunday's index in the array is 0 and
+                  // DateTime.sunday constant integer value is 7.
+                  final index = day % 7;
+                  // We "flip" the value in this example, but you may also
+                  // perform validation, a DB write, an HTTP call, or anything
+                  // else before you actually flip the value,
+                  // it's up to your app's needs.
+                  values[index] = !values[index];
+                });
+              },
+              values: values,
+              shortWeekdays: const ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+              
+            ),
+          ),
+        ],
       );
-    }
-      if (value == 'ช่วงวัน') {
+    },
+  );
+}
+
+else if (value == 'ช่วงวัน') {
       SizedBox(
         child: DateSelector(),
       );
-      showModalBottomSheet<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return SingleChildScrollView(
-              child: DateSelector()
-              );
-          });
-    } 
-    else {
+      
+showModalBottomSheet<void>(
+  context: context,
+  builder: (BuildContext context) {
+    return SingleChildScrollView(child: DateSelector());
+  }
+);
+    } else {
       // Handle other options ('ประจำวัน', 'ช่วงวัน')
     }
   }
 
-  Widget buildDaySelector(String day) {
-    return GestureDetector(
-      onTap: () => handleDaySelection(day),
-      child: Container(
-        width: 58,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.blue, width: 2),
-          color: Colors.blue[200], // Background color
-          shape: BoxShape.circle, // Circular shape
-        ),
-        child: Center(
-          child: Text(
-            day,
-            style: TextStyle(
-              fontSize: 22,
-              fontFamily: 'SukhumvitSet-Medium',
-              color: Colors.grey[800],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget buildDaySelector(String day) {
+  //   bool isSelected = selectedDays.contains(day);
+  //   return GestureDetector(
+  //     onTap: () => handleDaySelection(day),
+  //     child: Container(
+  //       width: 58,
+  //       decoration: BoxDecoration(
+  //         border: Border.all(
+  //           color: isSelected ? Colors.green : Colors.blue,
+  //           width: 2,
+  //         ),
+  //         color: isSelected ? Colors.green[200] : Colors.blue[200],
+  //         shape: BoxShape.circle,
+  //       ),
+  //       child: Center(
+  //         child: Column(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: [
+  //             Text(
+  //               day,
+  //               style: TextStyle(
+  //                 fontSize: 22,
+  //                 fontFamily: 'SukhumvitSet-Medium',
+  //                 color: isSelected ? Colors.green[800] : Colors.grey[800],
+  //               ),
+  //             ),
+  //             SizedBox(height: 4),
+  //             ElevatedButton(
+  //               onPressed: () => handleDuringtheday(day),
+  //               child: Text('ตกลง'),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-    void handleDuringtheday(String day) {
-    // Implement your logic to handle user's selection of a specific day
-    // For example, update dropdownValue and close the bottom sheet
-    setState(() {
-      dropdownValue = day;
-    });
-    Navigator.pop(context);
-  }
+  // void handleDaySelection(String day) {
+  //   if (selectedDays.contains(day)) {
+  //     selectedDays.remove(day);
+  //   } else {
+  //     selectedDays.add(day);
+  //   }
 
-  void handleDaySelection(String day) {
-    // Implement your logic to handle user's selection of a specific day
-    // For example, update dropdownValue and close the bottom sheet
+  //   // เพิ่มการส่งค่า day ไปที่ต้นทางที่ต้องการ (ตัวอย่างเช่นฟังก์ชันที่เรียก buildDaySelector)
+  //   // ตัวอย่างนี้ให้ส่ง day ไปยังฟังก์ชัน handleBottomSheetItemTap
+  // }
+
+
+  void handleDuringtheday(String value) {
     setState(() {
-      dropdownValue = day;
+      dropdownValue = value;
     });
     Navigator.pop(context);
   }
@@ -350,7 +448,7 @@ class _frequencyState extends State<frequency> {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Container(
@@ -410,14 +508,14 @@ class _frequencyState extends State<frequency> {
                   ),
                 ),
                 child: Text(
-                  dropdownValue ??
-                      "", // Display "เลือก" if no value is selected
+                  getSelectedDaysString(values),
                   style: TextStyle(
                     fontSize: 22,
                     fontFamily: 'SukhumvitSet-Medium',
                     color: Colors.grey[800],
                   ),
                 ),
+          
               ),
             ),
             Row(
@@ -633,8 +731,3 @@ class _frequencyState extends State<frequency> {
     );
   }
 }
-
-
-
-// กดหดหกดหกฝ
-
