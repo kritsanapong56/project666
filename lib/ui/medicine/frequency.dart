@@ -28,6 +28,7 @@ class DateSelector extends StatefulWidget {
 class _DateSelectorState extends State<DateSelector> {
   int _selectedValue = 1;
   String _selectedType = 'Day';
+
   @override
   Widget build(BuildContext context) {
     List<DropdownMenuItem<String>> _dropdownMenuItems = [
@@ -99,52 +100,18 @@ class _DateSelectorState extends State<DateSelector> {
                 });
               },
             ),
-             DropdownButton(
-              value: _selectedType,
-              items: _dropdownMenuItems,
-              onChanged: (value) {
-                setState(() {
-                  _selectedType = value!;
-                  _selectedValue = 1; // Reset selected value when changing type
-                });
-              },
-            ),
           ],
         ),
         SizedBox(height: 30),
         Container(
           padding: const EdgeInsets.only(bottom: 40),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "วันที่เลือก: ${getSelectedDate()}",
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(width: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // No data needs to be passed
-                },
-                child: Text('ตกลง'),
-              ),
-            ],
-          ),
+        child: Text(
+          'เลือก ${_selectedType.toLowerCase()}: $_selectedValue',
+          style: TextStyle(fontSize: 25),
         ),
+    ),
       ],
     );
-  }
-    String getSelectedDate() {
-    switch (_selectedType) {
-      case 'Day':
-        return "$_selectedValue วัน";
-      case 'Month':
-        return "$_selectedValue เดือน";
-      case 'Week':
-        return "$_selectedValue สัปดาห์";
-      default:
-        return "";
-    }
   }
 }
 
