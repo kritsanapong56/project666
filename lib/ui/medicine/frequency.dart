@@ -1,14 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_safealert/tool/color.dart';
 import 'package:flutter_alarm_safealert/ui/medicine/AddTimeAlertMedicine.dart';
-import 'package:flutter_alarm_safealert/ui/medicine/TypeMedicine.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:weekday_selector/weekday_selector.dart';
-
 
 StreamController<List<String>> selectedDaysController =
     StreamController<List<String>>.broadcast();
@@ -34,21 +31,15 @@ class _DateSelectorState extends State<DateSelector> {
     List<DropdownMenuItem<String>> _dropdownMenuItems = [
       const DropdownMenuItem(
           value: 'Day',
-          child: Text(
-            'วัน',
-            style: TextStyle(fontSize: 25),
+          child: Text('วัน',style: TextStyle(fontSize: 25),
           )),
       const DropdownMenuItem(
           value: 'Week',
-          child: Text(
-            'สัปดาห์',
-            style: TextStyle(fontSize: 25),
+          child: Text('สัปดาห์',style: TextStyle(fontSize: 25),
           )),
       const DropdownMenuItem(
           value: 'Month',
-          child: Text(
-            'เดือน',
-            style: TextStyle(fontSize: 25),
+          child: Text('เดือน',style: TextStyle(fontSize: 25),
           )),
     ];
 
@@ -61,7 +52,6 @@ class _DateSelectorState extends State<DateSelector> {
             style: const TextStyle(fontSize: 25),
           ));
     });
-
     List<DropdownMenuItem<int>> _monthsDropdownMenuItems =
         List.generate(12, (index) {
       return DropdownMenuItem(
@@ -71,7 +61,6 @@ class _DateSelectorState extends State<DateSelector> {
             style: const TextStyle(fontSize: 25),
           ));
     });
-
     List<DropdownMenuItem<int>> _weeksDropdownMenuItems =
         List.generate(52, (index) {
       return DropdownMenuItem(
@@ -112,16 +101,14 @@ class _DateSelectorState extends State<DateSelector> {
             ),
           ],
         ),
-        
         SizedBox(height: 30),
         Container(
           padding: const EdgeInsets.only(bottom: 40),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "วันที่เลือก: ${getSelectedDate()}",
-                style: TextStyle(fontSize: 20),
+              Text("วันที่เลือก: ${getSelectedDate()}",
+              style: TextStyle(fontSize: 20),
               ),
               SizedBox(width: 20),
               ElevatedButton(
@@ -149,7 +136,6 @@ String getSelectedDate() {
         return "";
     }
   }
-
 }
 
 class _frequencyState extends State<frequency> {
@@ -160,8 +146,6 @@ class _frequencyState extends State<frequency> {
   String dropdownValue = 'ประจำวัน';
   final values = List.filled(7, true);
   
-
-
   String getSelectedDaysString(List<bool> values) {
     List<String> selectedDays = [];
     for (int i = 0; i < values.length; i++) {
@@ -176,20 +160,8 @@ class _frequencyState extends State<frequency> {
   String getDayNameFromIndex(int index) {
     // Convert index to day name, customize as needed
     switch (index) {
-      case 0:
-        return 'อา';
-      case 1:
-        return 'จ';
-      case 2:
-        return 'อ';
-      case 3:
-        return 'พ';
-      case 4:
-        return 'พฤ';
-      case 5:
-        return 'ศ';
-      case 6:
-        return 'ส';
+      case 0: return 'อา'; case 1: return 'จ'; case 2: return 'อ'; case 3: return 'พ';
+      case 4: return 'พฤ'; case 5: return 'ศ'; case 6: return 'ส';
       // ... Continue for other days
       default:
         return '';
@@ -207,13 +179,11 @@ class _frequencyState extends State<frequency> {
         borderRadius: 25,
         styleDatePicker: MaterialRoundedDatePickerStyle(
           textStyleDayHeader: const TextStyle(
-              fontFamily: 'SukhumvitSet-Bold',
-              fontSize: 12,
+              fontFamily: 'SukhumvitSet-Bold',fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.color_grey),
           textStyleDayOnCalendar: const TextStyle(
-              fontFamily: 'SukhumvitSet-Bold',
-              fontSize: 12,
+              fontFamily: 'SukhumvitSet-Bold',fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.color_grey),
           paddingMonthHeader: EdgeInsets.all(10),
@@ -221,18 +191,15 @@ class _frequencyState extends State<frequency> {
           colorArrowPrevious: AppColors.colorMain,
           colorArrowNext: AppColors.colorMain,
           textStyleMonthYearHeader: const TextStyle(
-              fontFamily: 'SukhumvitSet-Bold',
-              fontSize: 22,
+              fontFamily: 'SukhumvitSet-Bold',fontSize: 22,
               fontWeight: FontWeight.w500,
               color: Colors.black),
           textStyleButtonPositive: const TextStyle(
-              fontFamily: 'SukhumvitSet-Bold',
-              fontSize: 16,
+              fontFamily: 'SukhumvitSet-Bold',fontSize: 16,
               fontWeight: FontWeight.w500,
               color: AppColors.color_grey),
           textStyleButtonNegative: const TextStyle(
-              fontFamily: 'SukhumvitSet-Bold',
-              fontSize: 16,
+              fontFamily: 'SukhumvitSet-Bold',fontSize: 16,
               fontWeight: FontWeight.w500,
               color: AppColors.color_grey),
         ),
@@ -259,9 +226,7 @@ class _frequencyState extends State<frequency> {
           _stxtHBD = DateFormat('yyyy-MM-dd').format(date!);
           var strDay = DateFormat('dd/MM/yyyy').format(date!);
           txtHBD.text = strDay;
-
           FocusScopeNode currentFocus = FocusScope.of(context);
-
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
           }
@@ -270,22 +235,6 @@ class _frequencyState extends State<frequency> {
     });
   }
 
-  // void pppppp(String value) {
-  //   setState(() {
-  //     dropdownValue = value;
-  //   });
-  //   if (value == 'ช่วงวัน') {
-  //     SizedBox(
-  //       child: DateSelector(),
-  //     );
-  //     showModalBottomSheet<void>(
-  //         context: context,
-  //         builder: (BuildContext context) {
-  //           return SingleChildScrollView(child: DateSelector());
-  //         });
-  //   }
-  // }
-
   void handleBottomSheetItemTap(String value) {
     if (value == 'วันของสัปดาห์') {
   showModalBottomSheet(
@@ -293,29 +242,20 @@ class _frequencyState extends State<frequency> {
     builder: (BuildContext context) {
       return Column(
         children: [
-          // Text widget at the top
           const Padding(
             padding: EdgeInsets.only(bottom: 16.0), // Adjust bottom padding as needed
-            child: Text(
-              'เลือกวันของสัปดาห์',
-              style: TextStyle(
-                fontSize: 25,fontWeight: FontWeight.bold,
+            child: Text('เลือกวันของสัปดาห์',
+              style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,
               ),
             ),
           ),
           // WeekdaySelector widget with custom size
           SizedBox(
-            height: 90, // Set the desired heightwidth: double.infinity, // Set the desired width (here, using full width)
+            height: 90,
             child: WeekdaySelector(
               onChanged: (int day) {
                 setState(() {
-                  // Use module % 7 as Sunday's index in the array is 0 and
-                  // DateTime.sunday constant integer value is 7.
                   final index = day % 7;
-                  // We "flip" the value in this example, but you may also
-                  // perform validation, a DB write, an HTTP call, or anything
-                  // else before you actually flip the value,
-                  // it's up to your app's needs.
                   values[index] = !values[index];
                 });
               },
@@ -328,9 +268,7 @@ class _frequencyState extends State<frequency> {
       );
     },
   );
-}
-
-else if (value == 'ช่วงวัน') {
+} else if (value == 'ช่วงวัน') {
       SizedBox(
         child: DateSelector(),
       );
@@ -346,44 +284,6 @@ showModalBottomSheet<void>(
     }
   }
 
-  // Widget buildDaySelector(String day) {
-  //   bool isSelected = selectedDays.contains(day);
-  //   return GestureDetector(
-  //     onTap: () => handleDaySelection(day),
-  //     child: Container(
-  //       width: 58,
-  //       decoration: BoxDecoration(
-  //         border: Border.all(
-  //           color: isSelected ? Colors.green : Colors.blue,
-  //           width: 2,
-  //         ),
-  //         color: isSelected ? Colors.green[200] : Colors.blue[200],
-  //         shape: BoxShape.circle,
-  //       ),
-  //       child: Center(
-  //         child: Column(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             Text(
-  //               day,
-  //               style: TextStyle(
-  //                 fontSize: 22,
-  //                 fontFamily: 'SukhumvitSet-Medium',
-  //                 color: isSelected ? Colors.green[800] : Colors.grey[800],
-  //               ),
-  //             ),
-  //             SizedBox(height: 4),
-  //             ElevatedButton(
-  //               onPressed: () => handleDuringtheday(day),
-  //               child: Text('ตกลง'),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   // void handleDaySelection(String day) {
   //   if (selectedDays.contains(day)) {
   //     selectedDays.remove(day);
@@ -394,8 +294,6 @@ showModalBottomSheet<void>(
   //   // เพิ่มการส่งค่า day ไปที่ต้นทางที่ต้องการ (ตัวอย่างเช่นฟังก์ชันที่เรียก buildDaySelector)
   //   // ตัวอย่างนี้ให้ส่ง day ไปยังฟังก์ชัน handleBottomSheetItemTap
   // }
-
-
   void handleDuringtheday(String value) {
     setState(() {
       dropdownValue = value;
@@ -409,10 +307,8 @@ showModalBottomSheet<void>(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: AppColors.colorMain,
-        title: const Text(
-          "ความถี่การทานยา",
-          style: TextStyle(
-              fontSize: 25,
+        title: const Text("ความถี่การทานยา",
+          style: TextStyle(fontSize: 25,
               color: Colors.black,
               fontFamily: 'SukhumvitSet-Bold'),
         ),
@@ -433,16 +329,12 @@ showModalBottomSheet<void>(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              margin: const EdgeInsets.only(
-                top: 10,
-                left: 20,
-              ),
+              margin: const EdgeInsets.only(top: 10,left: 20,),
               width: double.maxFinite,
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "ความถี่ในการทานยา",
+                  Text("ความถี่ในการทานยา",
                     style: TextStyle(
                       fontSize: 23.0,
                       fontFamily: 'SukhumvitSet-Medium',
@@ -452,9 +344,7 @@ showModalBottomSheet<void>(
                 ],
               ),
             ),
-            const SizedBox(
-              width: 10,
-            ),
+            const SizedBox(width: 10,),
             Container(
               width: 380,
               child: ElevatedButton(
@@ -463,14 +353,11 @@ showModalBottomSheet<void>(
                     context: context,
                     builder: (BuildContext context) {
                       return Column(
-                        mainAxisSize:
-                            MainAxisSize.min, // Prevent wrapping content
+                        mainAxisSize:MainAxisSize.min, // Prevent wrapping content
                         children: <Widget>[
                           ListTile(
-                            title: Text(
-                              'ประจำวัน',
-                              style: TextStyle(
-                                fontSize: 22,
+                            title: Text('ประจำวัน',
+                              style: TextStyle(fontSize: 22,
                                 fontFamily: 'SukhumvitSet-Medium',
                                 color: Colors.grey[800],
                               ),
@@ -478,10 +365,8 @@ showModalBottomSheet<void>(
                             onTap: () => handleBottomSheetItemTap('ประจำวัน'),
                           ),
                           ListTile(
-                            title: Text(
-                              'วันของสัปดาห์',
-                              style: TextStyle(
-                                fontSize: 22,
+                            title: Text('วันของสัปดาห์',
+                              style: TextStyle(fontSize: 22,
                                 fontFamily: 'SukhumvitSet-Medium',
                                 color: Colors.grey[800],
                               ),
@@ -490,10 +375,8 @@ showModalBottomSheet<void>(
                                 handleBottomSheetItemTap('วันของสัปดาห์'),
                           ),
                           ListTile(
-                            title: Text(
-                              'ช่วงวัน',
-                              style: TextStyle(
-                                fontSize: 22,
+                            title: Text('ช่วงวัน',
+                              style: TextStyle( fontSize: 22,
                                 fontFamily: 'SukhumvitSet-Medium',
                                 color: Colors.grey[800],
                               ),
@@ -513,10 +396,8 @@ showModalBottomSheet<void>(
                 ),
                 child: Text(
                   getSelectedDaysString(values),
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontFamily: 'SukhumvitSet-Medium',
-                    color: Colors.grey[800],
+                  style: TextStyle(fontSize: 22,fontFamily: 'SukhumvitSet-Medium',
+                  color: Colors.grey[800],
                   ),
                 ),
           
@@ -531,25 +412,19 @@ showModalBottomSheet<void>(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        margin:
-                            const EdgeInsets.only(top: 20, left: 10, right: 10),
+                        margin:const EdgeInsets.only(top: 20, left: 10, right: 10),
                         padding: EdgeInsets.only(left: 15.0, right: 15.0),
                         width: double.maxFinite,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment
-                              .start, // Align text to the start
+                          crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
                           children: [
-                            const Text(
-                              "เริ่มต้น",
-                              style: TextStyle(
+                            const Text("เริ่มต้น",style: TextStyle(
                                 fontSize: 23.0,
                                 fontFamily: 'SukhumvitSet-Medium',
                                 color: Colors.black,
                               ),
                             ),
-                            const SizedBox(
-                                height:
-                                    10), // Adjust the spacing between "เริ่มต้น" and TextField
+                            const SizedBox(height:10), // Adjust the spacing between "เริ่มต้น" and TextField
                             TextField(
                               onTap: () {
                                 dateHBD(context);
@@ -567,18 +442,15 @@ showModalBottomSheet<void>(
                                   horizontal: 15,
                                 ),
                                 border: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
+                                  borderRadius: BorderRadius.all(Radius.circular(20.0),
                                   ),
                                   borderSide: BorderSide(
                                       width: 0, style: BorderStyle.none),
                                 ),
                                 filled: true,
                                 hintText: "วันที่เริ่มทาน",
-                                hintStyle: TextStyle(
-                                  fontSize: 22,
-                                  fontFamily: 'SukhumvitSet-Medium',
-                                  color: Colors.grey[800],
+                                hintStyle: TextStyle(fontSize: 22,fontFamily: 'SukhumvitSet-Medium',
+                                color: Colors.grey[800],
                                 ),
                                 fillColor: AppColors.bgColor,
                               ),
@@ -592,23 +464,11 @@ showModalBottomSheet<void>(
               ],
             ),
             SizedBox(height: 20),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //           builder: (context) => AddTimeAlertMedicine(halo)),
-            //     );
-            //     print('เลือกข้อมูล: $selectedNumber');
-            //   },
-            //   child: Text('หน้าถัดไป'),
-            // ),
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
-        height: 60,
+      floatingActionButton: Container(height: 60,
         margin: const EdgeInsets.all(20),
         child: Row(
           children: [
@@ -668,13 +528,10 @@ showModalBottomSheet<void>(
                 child: ElevatedButton(
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsets>(
-                      const EdgeInsets.only(
-                          left: 5, right: 5, top: 10, bottom: 10),
-                    ),
+                      const EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),),
                     shape: MaterialStateProperty.resolveWith(
                         (states) => RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            )),
+                          borderRadius: BorderRadius.circular(20.0),)),
                     backgroundColor: MaterialStateProperty.resolveWith(
                         (states) => AppColors.colorMain),
                     elevation: MaterialStateProperty.resolveWith<double>(

@@ -1,17 +1,13 @@
 import 'dart:io';
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_alarm_safealert/ui/medicine/frequency.dart';
-
 import '../../model/ModelTimeTakeMedicine.dart';
 import '../../tool/color.dart';
-
 import '../../tool/screen.dart';
 import '../../tool/url.dart';
-
 import 'TypeMedicine.dart';
 
 class AddMedicine extends StatefulWidget {
@@ -25,12 +21,9 @@ class AddMedicine extends StatefulWidget {
 class _AddMedicine extends State<AddMedicine> {
   TextEditingController txtMedicine = TextEditingController();
   TextEditingController txtMedicineQuantity = TextEditingController();
-
   int _selectedIndex = -1;
   var _selectedTimeTakeId = "0";
   // List<String> _options = ['ก่อนอาหาร', 'หลังอาหาร', 'ทานพร้อมอาหาร','ทานตามอาการ'];
-
-
 
   @override
   void initState() {
@@ -40,7 +33,6 @@ class _AddMedicine extends State<AddMedicine> {
     if (widget.medicine_name.toString().isNotEmpty) {
       txtMedicine.text = widget.medicine_name;
     }
-
     // loadDataTimeTake();
     super.initState();
   }
@@ -227,7 +219,7 @@ class _AddMedicine extends State<AddMedicine> {
                                           controller: txtMedicineQuantity,
                                           enabled: true,
                                           keyboardType:
-                                              TextInputType.numberWithOptions(
+                                              const TextInputType.numberWithOptions(
                                                   decimal: true),
                                           inputFormatters: [
                                             LengthLimitingTextInputFormatter(
@@ -249,7 +241,7 @@ class _AddMedicine extends State<AddMedicine> {
                                             border: OutlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(20.0),
-                                              borderSide: BorderSide(
+                                              borderSide: const BorderSide(
                                                   width: 0,
                                                   style: BorderStyle.none),
                                             ),
@@ -405,12 +397,12 @@ class _AddMedicine extends State<AddMedicine> {
               flex: 5,
               child: Container(
                 alignment: Alignment.bottomCenter,
-                margin: EdgeInsets.only(right: 5),
+                margin: const EdgeInsets.only(right: 5),
                 width: double.maxFinite,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsets>(
-                      EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
+                      const EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
                     ),
                     shape: MaterialStateProperty.resolveWith(
                         (states) => RoundedRectangleBorder(
@@ -472,26 +464,26 @@ class _AddMedicine extends State<AddMedicine> {
                       },
                     ),
                   ),
-                  onPressed: () {
-                    if(txtMedicine.text.isNotEmpty && txtMedicineQuantity.text.isNotEmpty ) {
-                      AppUrl.objAddItemMedicine.nameMedicine = txtMedicine.text.toString();
-                      AppUrl.objAddItemMedicine.unitSubMedicineName = txtMedicineQuantity.text.toString();
-                      _pushPagetest(context,false);
-                     }else {
-                      _openPopupInvalidate(context,"กรุณากรอกข้อมูลให้ครบถ้วน");
-                    }
-                  },
-
                   // onPressed: () {
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => const frequency(),
-                  //     ),
-                  //   );
-                  //   // ทำอะไรก็ตามที่คุณต้องการเมื่อกดปุ่ม "หน้าถัดไป"
-                  //   // ในตัวอย่างนี้เราจะแสดงข้อมูลที่ถูกเลือก
+                  //   if(txtMedicine.text.isNotEmpty && txtMedicineQuantity.text.isNotEmpty ) {
+                  //     AppUrl.objAddItemMedicine.nameMedicine = txtMedicine.text.toString();
+                  //     AppUrl.objAddItemMedicine.unitSubMedicineName = txtMedicineQuantity.text.toString();
+                  //     _pushPagetest(context,false);
+                  //    }else {
+                  //     _openPopupInvalidate(context,"กรุณากรอกข้อมูลให้ครบถ้วน");
+                  //   }
                   // },
+
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const frequency(),
+                      ),
+                    );
+                    // ทำอะไรก็ตามที่คุณต้องการเมื่อกดปุ่ม "หน้าถัดไป"
+                    // ในตัวอย่างนี้เราจะแสดงข้อมูลที่ถูกเลือก
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
