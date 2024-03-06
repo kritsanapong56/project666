@@ -31,18 +31,23 @@ class _DateSelectorState extends State<DateSelector> {
     List<DropdownMenuItem<String>> _dropdownMenuItems = [
       const DropdownMenuItem(
           value: 'Day',
-          child: Text('วัน',style: TextStyle(fontSize: 25),
+          child: Text(
+            'วัน',
+            style: TextStyle(fontSize: 25),
           )),
       const DropdownMenuItem(
           value: 'Week',
-          child: Text('สัปดาห์',style: TextStyle(fontSize: 25),
+          child: Text(
+            'สัปดาห์',
+            style: TextStyle(fontSize: 25),
           )),
       const DropdownMenuItem(
           value: 'Month',
-          child: Text('เดือน',style: TextStyle(fontSize: 25),
+          child: Text(
+            'เดือน',
+            style: TextStyle(fontSize: 25),
           )),
     ];
-
     List<DropdownMenuItem<int>> _daysDropdownMenuItems =
         List.generate(365, (index) {
       return DropdownMenuItem(
@@ -73,6 +78,11 @@ class _DateSelectorState extends State<DateSelector> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        const Padding(padding: EdgeInsets.only(bottom: 10)),
+        const Text(
+          'เลือกช่วงวัน',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -101,21 +111,25 @@ class _DateSelectorState extends State<DateSelector> {
             ),
           ],
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 20),
         Container(
-          padding: const EdgeInsets.only(bottom: 40),
+          padding: const EdgeInsets.only(bottom: 30),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("วันที่เลือก: ${getSelectedDate()}",
-              style: TextStyle(fontSize: 20),
+              Text(
+                "วันที่เลือก: ${getSelectedDate()}",
+                style: const TextStyle(fontSize: 24),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 20),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context); // No data needs to be passed
                 },
-                child: Text('ตกลง'),
+                child: const Text(
+                  'ตกลง',
+                  style: TextStyle(fontSize: 23),
+                ),
               ),
             ],
           ),
@@ -124,7 +138,7 @@ class _DateSelectorState extends State<DateSelector> {
     );
   }
 
-String getSelectedDate() {
+  String getSelectedDate() {
     switch (_selectedType) {
       case 'Day':
         return "$_selectedValue วัน";
@@ -141,31 +155,125 @@ String getSelectedDate() {
 class _frequencyState extends State<frequency> {
   var _stxtHBD = "";
   TextEditingController txtHBD = TextEditingController();
+  TextEditingController selectfrequency = TextEditingController();
   int selectedNumber = 1;
   String halo = "0";
-  String dropdownValue = 'ประจำวัน';
+  String dropdownValue = '';
   final values = List.filled(7, true);
-  
+  int _selectedValue = 1;
+  String _selectedType = 'Day';
+  final List<DropdownMenuItem<String>> _dropdownMenuItems = [
+    const DropdownMenuItem(
+        value: 'Day',
+        child: Text(
+          'วัน',
+          style: TextStyle(fontSize: 25),
+        )),
+    const DropdownMenuItem(
+        value: 'Week',
+        child: Text(
+          'สัปดาห์',
+          style: TextStyle(fontSize: 25),
+        )),
+    const DropdownMenuItem(
+        value: 'Month',
+        child: Text(
+          'เดือน',
+          style: TextStyle(fontSize: 25),
+        )),
+  ];
+  final List<DropdownMenuItem<int>> _daysDropdownMenuItems =
+      List.generate(365, (index) {
+    return DropdownMenuItem(
+        value: index + 1,
+        child: Text(
+          '${index + 1}',
+          style: const TextStyle(fontSize: 25),
+        ));
+  });
+  final List<DropdownMenuItem<int>> _monthsDropdownMenuItems =
+      List.generate(12, (index) {
+    return DropdownMenuItem(
+        value: index + 1,
+        child: Text(
+          '${index + 1}',
+          style: const TextStyle(fontSize: 25),
+        ));
+  });
+  final List<DropdownMenuItem<int>> _weeksDropdownMenuItems =
+      List.generate(52, (index) {
+    return DropdownMenuItem(
+        value: index + 1,
+        child: Text(
+          '${index + 1}',
+          style: const TextStyle(fontSize: 25),
+        ));
+  });
+
+  String getSelectedDate() {
+    switch (_selectedType) {
+      case 'Day':
+        return "$_selectedValue วัน";
+      case 'Month':
+        return "$_selectedValue เดือน";
+      case 'Week':
+        return "$_selectedValue สัปดาห์";
+      default:
+        return "";
+    }
+  }
+
+  // String getSelectedDaysString(List<bool> values) {
+  //   List<String> selectedDays = [];
+  //   for (int i = 0; i < values.length; i++) {
+  //     if (values[i]) {
+  //       selectedDays.add(getDayNameFromIndex(i));
+  //     }
+  //   }
+  //   return selectedDays.isEmpty ? "" : selectedDays.join(', ');
+  // }
   String getSelectedDaysString(List<bool> values) {
     List<String> selectedDays = [];
     for (int i = 0; i < values.length; i++) {
       if (values[i]) {
-        // Convert index to day name or any representation you prefer
         selectedDays.add(getDayNameFromIndex(i));
       }
     }
-    return selectedDays.isEmpty ? "ไม่ได้เลือก" : selectedDays.join(', ');
+    return selectedDays.isEmpty ? 'ไม่เลือกวัน' : selectedDays.join(', ');
   }
 
   String getDayNameFromIndex(int index) {
     // Convert index to day name, customize as needed
     switch (index) {
-      case 0: return 'อา'; case 1: return 'จ'; case 2: return 'อ'; case 3: return 'พ';
-      case 4: return 'พฤ'; case 5: return 'ศ'; case 6: return 'ส';
+      case 0:
+        return 'อา';
+      case 1:
+        return 'จ';
+      case 2:
+        return 'อ';
+      case 3:
+        return 'พ';
+      case 4:
+        return 'พฤ';
+      case 5:
+        return 'ศ';
+      case 6:
+        return 'ส';
       // ... Continue for other days
       default:
         return '';
     }
+  }
+
+  void printSelectedDays() {
+    List<String> selectedDayNames = [];
+    for (int i = 0; i < selectedDays.length; i++) {
+      if (selectedDays[i]) {
+        String dayName = getDayNameFromIndex(i);
+        selectedDayNames.add(dayName);
+      }
+    }
+    print('Selected Days: $selectedDayNames');
   }
 
   void dateHBD(BuildContext context) {
@@ -179,11 +287,13 @@ class _frequencyState extends State<frequency> {
         borderRadius: 25,
         styleDatePicker: MaterialRoundedDatePickerStyle(
           textStyleDayHeader: const TextStyle(
-              fontFamily: 'SukhumvitSet-Bold',fontSize: 12,
+              fontFamily: 'SukhumvitSet-Bold',
+              fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.color_grey),
           textStyleDayOnCalendar: const TextStyle(
-              fontFamily: 'SukhumvitSet-Bold',fontSize: 12,
+              fontFamily: 'SukhumvitSet-Bold',
+              fontSize: 12,
               fontWeight: FontWeight.w600,
               color: AppColors.color_grey),
           paddingMonthHeader: EdgeInsets.all(10),
@@ -191,15 +301,18 @@ class _frequencyState extends State<frequency> {
           colorArrowPrevious: AppColors.colorMain,
           colorArrowNext: AppColors.colorMain,
           textStyleMonthYearHeader: const TextStyle(
-              fontFamily: 'SukhumvitSet-Bold',fontSize: 22,
+              fontFamily: 'SukhumvitSet-Bold',
+              fontSize: 22,
               fontWeight: FontWeight.w500,
               color: Colors.black),
           textStyleButtonPositive: const TextStyle(
-              fontFamily: 'SukhumvitSet-Bold',fontSize: 16,
+              fontFamily: 'SukhumvitSet-Bold',
+              fontSize: 16,
               fontWeight: FontWeight.w500,
               color: AppColors.color_grey),
           textStyleButtonNegative: const TextStyle(
-              fontFamily: 'SukhumvitSet-Bold',fontSize: 16,
+              fontFamily: 'SukhumvitSet-Bold',
+              fontSize: 16,
               fontWeight: FontWeight.w500,
               color: AppColors.color_grey),
         ),
@@ -235,80 +348,97 @@ class _frequencyState extends State<frequency> {
     });
   }
 
+  List<bool> selectedDays = List.filled(7, false);
   void handleBottomSheetItemTap(String value) {
     if (value == 'วันของสัปดาห์') {
-  showModalBottomSheet(
-    context: context,
-    builder: (BuildContext context) {
-      return Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 16.0), // Adjust bottom padding as needed
-            child: Text('เลือกวันของสัปดาห์',
-              style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold,
+      showModalBottomSheet<void>(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        context: context,
+        builder: (
+          BuildContext context,
+        ) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10.0, top: 15),
+                child: Text(
+                  'เลือกวันของสัปดาห์',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-            ),
-          ),
-          // WeekdaySelector widget with custom size
-          SizedBox(
-            height: 90,
-            child: WeekdaySelector(
-              onChanged: (int day) {
-                setState(() {
-                  final index = day % 7;
-                  values[index] = !values[index];
-                });
-              },
-              values: values,
-              shortWeekdays: const ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
-              
-            ),
-          ),
-        ],
+              SizedBox(
+                height: 92,
+                child: WeekdaySelector(
+                  onChanged: (int day) {
+                    setState(() {
+                      final index = day % 7;
+                      values[index] = !values[index];
+                      selectedDays[index] =
+                          !selectedDays[index]; // Store selected values
+                      printSelectedDays(); // Call the function to print selected days
+                    });
+                  },
+                  values: values,
+                  shortWeekdays: const ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+                ),
+              ),
+              const SizedBox(height: 15),
+              Container(
+                  padding: const EdgeInsets.only(bottom: 50),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      {
+                        dropdownValue = 'วันของสัปดาห์';
+                        print(selectedDays);
+                        Navigator.of(context).pop(); // Close the bottom sheet
+                      }
+                    },
+                    child: const Text('ตกลง',
+                        style: TextStyle(
+                          fontFamily: 'SukhumvitSet-medium',
+                          fontSize: 24,
+                        )),
+                  )),
+            ],
+          );
+        },
       );
-    },
-  );
-} else if (value == 'ช่วงวัน') {
+    } else if (value == 'ช่วงวัน') {
       SizedBox(
         child: DateSelector(),
       );
-      
-showModalBottomSheet<void>(
-  context: context,
-  builder: (BuildContext context) {
-    return SingleChildScrollView(child: DateSelector());
-  }
-);
+      showModalBottomSheet<void>(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+          context: context,
+          builder: (BuildContext context) {
+            return SingleChildScrollView(child: DateSelector());
+          });
     } else {
       // Handle other options ('ประจำวัน', 'ช่วงวัน')
     }
   }
 
-  // void handleDaySelection(String day) {
-  //   if (selectedDays.contains(day)) {
-  //     selectedDays.remove(day);
-  //   } else {
-  //     selectedDays.add(day);
-  //   }
-
-  //   // เพิ่มการส่งค่า day ไปที่ต้นทางที่ต้องการ (ตัวอย่างเช่นฟังก์ชันที่เรียก buildDaySelector)
-  //   // ตัวอย่างนี้ให้ส่ง day ไปยังฟังก์ชัน handleBottomSheetItemTap
-  // }
-  void handleDuringtheday(String value) {
-    setState(() {
-      dropdownValue = value;
-    });
-    Navigator.pop(context);
-  }
-
+  bool showWeekdaySelector = false;
+  bool isChecked = false;
+  bool showSecondColumn = false;
+  int selectedRadio = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: AppColors.colorMain,
-        title: const Text("ความถี่การทานยา",
-          style: TextStyle(fontSize: 25,
+        title: const Text(
+          "ความถี่การทานยา",
+          style: TextStyle(
+              fontSize: 25,
               color: Colors.black,
               fontFamily: 'SukhumvitSet-Bold'),
         ),
@@ -329,12 +459,16 @@ showModalBottomSheet<void>(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              margin: const EdgeInsets.only(top: 10,left: 20,),
+              margin: const EdgeInsets.only(
+                top: 10,
+                left: 20,
+              ),
               width: double.maxFinite,
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("ความถี่ในการทานยา",
+                  Text(
+                    "ความถี่ในการทานยา",
                     style: TextStyle(
                       fontSize: 23.0,
                       fontFamily: 'SukhumvitSet-Medium',
@@ -344,7 +478,214 @@ showModalBottomSheet<void>(
                 ],
               ),
             ),
-            const SizedBox(width: 10,),
+            Container(
+              margin: const EdgeInsets.only(top: 10, left: 20),
+              width: double.maxFinite,
+              child: Row(
+                children: [
+                  Radio(
+                    value: 1,
+                    groupValue: selectedRadio,
+                    onChanged: (int? value) {
+                      setState(() {
+                        selectedRadio = value ?? 0;
+                      });
+                    },
+                  ),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "ประจำวัน",
+                        style: TextStyle(
+                          fontSize: 21.0,
+                          fontFamily: 'SukhumvitSet-Medium',
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            //////////////////////แสดงประจำวัน
+            if (selectedRadio == 1)
+              Container(
+                margin: const EdgeInsets.only(top: 10, left: 20),
+                width: double.maxFinite,
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.resolveWith(
+                              (states) => RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            print("ประจำวัน");
+                          },
+                          child: const Text(
+                            "ประจำวัน",
+                            style: TextStyle(
+                              fontSize: 23,
+                              fontFamily: 'SukhumvitSet-Medium',
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            Container(
+              margin: const EdgeInsets.only(top: 10, left: 20),
+              width: double.maxFinite,
+              child: Row(
+                children: [
+                  Radio(
+                    value: 2,
+                    groupValue: selectedRadio,
+                    onChanged: (int? value) {
+                      setState(() {
+                        selectedRadio = value ?? 0;
+                      });
+                    },
+                  ),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "วันของสัปดาห์",
+                        style: TextStyle(
+                          fontSize: 21.0,
+                          fontFamily: 'SukhumvitSet-Medium',
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+//////////// /////////กดเลือกradio แสดง วัน//////////////////////////////////
+            if (selectedRadio == 2)
+              SizedBox(
+                height: 92,
+                child: WeekdaySelector(
+                  onChanged: (int day) {
+                    setState(() {
+                      final index = day % 7;
+                      values[index] = !values[index];
+                      selectedDays[index] =
+                          !selectedDays[index]; // Store selected values
+                      printSelectedDays(); // Call the function to print selected days
+                    });
+                  },
+                  values: values,
+                  shortWeekdays: const ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+                ),
+              ),
+            Container(
+              margin: const EdgeInsets.only(top: 10, left: 20),
+              width: double.maxFinite,
+              child: Row(
+                children: [
+                  Radio(
+                    value: 3,
+                    groupValue: selectedRadio,
+                    onChanged: (int? value) {
+                      setState(() {
+                        selectedRadio = value ?? 0;
+                      });
+                    },
+                  ),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "ช่วงวัน",
+                        style: TextStyle(
+                          fontSize: 21.0,
+                          fontFamily: 'SukhumvitSet-Medium',
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            if (selectedRadio == 3)
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Padding(padding: EdgeInsets.only(bottom: 10)),
+                  const Text(
+                    'เลือกช่วงวัน',
+                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 25),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      DropdownButton(
+                        value: _selectedValue,
+                        items: _selectedType == 'Day'
+                            ? _daysDropdownMenuItems
+                            : (_selectedType == 'Month'
+                                ? _monthsDropdownMenuItems
+                                : _weeksDropdownMenuItems),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedValue = value!;
+                          });
+                        },
+                      ),
+                      DropdownButton(
+                        value: _selectedType,
+                        items: _dropdownMenuItems,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedType = value!;
+                            _selectedValue =
+                                1; // Reset selected value when changing type
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "วันที่เลือก: ${getSelectedDate()}",
+                          style: const TextStyle(fontSize: 24),
+                        ),
+                        const SizedBox(width: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(
+                                context); // No data needs to be passed
+                          },
+                          child: const Text(
+                            'ตกลง',
+                            style: TextStyle(fontSize: 23),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
             Container(
               width: 380,
               child: ElevatedButton(
@@ -353,11 +694,14 @@ showModalBottomSheet<void>(
                     context: context,
                     builder: (BuildContext context) {
                       return Column(
-                        mainAxisSize:MainAxisSize.min, // Prevent wrapping content
+                        mainAxisSize:
+                            MainAxisSize.min, // Prevent wrapping content
                         children: <Widget>[
                           ListTile(
-                            title: Text('ประจำวัน',
-                              style: TextStyle(fontSize: 22,
+                            title: Text(
+                              'ประจำวัน',
+                              style: TextStyle(
+                                fontSize: 22,
                                 fontFamily: 'SukhumvitSet-Medium',
                                 color: Colors.grey[800],
                               ),
@@ -365,8 +709,10 @@ showModalBottomSheet<void>(
                             onTap: () => handleBottomSheetItemTap('ประจำวัน'),
                           ),
                           ListTile(
-                            title: Text('วันของสัปดาห์',
-                              style: TextStyle(fontSize: 22,
+                            title: Text(
+                              'วันของสัปดาห์',
+                              style: TextStyle(
+                                fontSize: 22,
                                 fontFamily: 'SukhumvitSet-Medium',
                                 color: Colors.grey[800],
                               ),
@@ -375,8 +721,10 @@ showModalBottomSheet<void>(
                                 handleBottomSheetItemTap('วันของสัปดาห์'),
                           ),
                           ListTile(
-                            title: Text('ช่วงวัน',
-                              style: TextStyle( fontSize: 22,
+                            title: Text(
+                              'ช่วงวัน',
+                              style: TextStyle(
+                                fontSize: 22,
                                 fontFamily: 'SukhumvitSet-Medium',
                                 color: Colors.grey[800],
                               ),
@@ -395,12 +743,13 @@ showModalBottomSheet<void>(
                   ),
                 ),
                 child: Text(
-                  getSelectedDaysString(values),
-                  style: TextStyle(fontSize: 22,fontFamily: 'SukhumvitSet-Medium',
-                  color: Colors.grey[800],
+                  getSelectedDaysString(selectedDays),
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontFamily: 'SukhumvitSet-Medium',
+                    color: Colors.grey[800],
                   ),
                 ),
-          
               ),
             ),
             Row(
@@ -412,19 +761,25 @@ showModalBottomSheet<void>(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                        margin:const EdgeInsets.only(top: 20, left: 10, right: 10),
+                        margin:
+                            const EdgeInsets.only(top: 20, left: 10, right: 10),
                         padding: EdgeInsets.only(left: 15.0, right: 15.0),
                         width: double.maxFinite,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
+                          crossAxisAlignment: CrossAxisAlignment
+                              .start, // Align text to the start
                           children: [
-                            const Text("เริ่มต้น",style: TextStyle(
+                            const Text(
+                              "เริ่มต้น",
+                              style: TextStyle(
                                 fontSize: 23.0,
                                 fontFamily: 'SukhumvitSet-Medium',
                                 color: Colors.black,
                               ),
                             ),
-                            const SizedBox(height:10), // Adjust the spacing between "เริ่มต้น" and TextField
+                            const SizedBox(
+                                height:
+                                    10), // Adjust the spacing between "เริ่มต้น" and TextField
                             TextField(
                               onTap: () {
                                 dateHBD(context);
@@ -442,15 +797,18 @@ showModalBottomSheet<void>(
                                   horizontal: 15,
                                 ),
                                 border: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(20.0),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20.0),
                                   ),
                                   borderSide: BorderSide(
                                       width: 0, style: BorderStyle.none),
                                 ),
                                 filled: true,
                                 hintText: "วันที่เริ่มทาน",
-                                hintStyle: TextStyle(fontSize: 22,fontFamily: 'SukhumvitSet-Medium',
-                                color: Colors.grey[800],
+                                hintStyle: TextStyle(
+                                  fontSize: 22,
+                                  fontFamily: 'SukhumvitSet-Medium',
+                                  color: Colors.grey[800],
                                 ),
                                 fillColor: AppColors.bgColor,
                               ),
@@ -468,7 +826,8 @@ showModalBottomSheet<void>(
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(height: 60,
+      floatingActionButton: Container(
+        height: 60,
         margin: const EdgeInsets.all(20),
         child: Row(
           children: [
@@ -476,12 +835,13 @@ showModalBottomSheet<void>(
               flex: 5,
               child: Container(
                 alignment: Alignment.bottomCenter,
-                margin: EdgeInsets.only(right: 5),
+                margin: const EdgeInsets.only(right: 5),
                 width: double.maxFinite,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsets>(
-                      EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),
+                      const EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
                     ),
                     shape: MaterialStateProperty.resolveWith(
                         (states) => RoundedRectangleBorder(
@@ -528,10 +888,13 @@ showModalBottomSheet<void>(
                 child: ElevatedButton(
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all<EdgeInsets>(
-                      const EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 10),),
+                      const EdgeInsets.only(
+                          left: 5, right: 5, top: 10, bottom: 10),
+                    ),
                     shape: MaterialStateProperty.resolveWith(
                         (states) => RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),)),
+                              borderRadius: BorderRadius.circular(20.0),
+                            )),
                     backgroundColor: MaterialStateProperty.resolveWith(
                         (states) => AppColors.colorMain),
                     elevation: MaterialStateProperty.resolveWith<double>(
@@ -549,7 +912,6 @@ showModalBottomSheet<void>(
                   //     _openPopupInvalidate(context,"กรุณากรอกข้อมูลให้ครบถ้วน");
                   //   }
                   // },
-
                   onPressed: () {
                     Navigator.push(
                       context,
